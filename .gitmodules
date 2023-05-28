@@ -1,0 +1,6 @@
+[submodule "browser-compat-data"]
+	path = browser-compat-data
+	url = https://github.com/mdn/browser-compat-data
+[submodule "caniuse"]
+	path = caniuse
+	url = https://github.com/Fyrd/caniuse
