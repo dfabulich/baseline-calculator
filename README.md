@@ -2,16 +2,7 @@
 
 How long does it take for web features to achieve widespread availability?
 
-**tl;dr: It takes about four years for 80% of features to achieve 95% market share.**
-
-Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
----|---|---|---|---|---|---|---|---
-80% share|0 months|2 months|5 months|16 months|21 months|24 months|29 months|never
-90% share|7 months|21 months|22 months|32 months|never|never|never|never
-95% share|30 months|45 months|48 months|never|never|never|never|never
-97% share|56 months|never|never|never|never|never|never|never
-98% share|never|never|never|never|never|never|never|never
-99% share|never|never|never|never|never|never|never|never
+**tl;dr: The features released in 2020 took 30 months to achieve 95% market share.**
 
 # Background: How should "Baseline" be defined?
 
@@ -83,9 +74,9 @@ We gather historical market share data from the Git history of the Caniuse `data
 
 <https://gs.statcounter.com/browser-version-market-share>
 
-StatCounter lists all Android Chrome as "Chrome for Android," without breaking it down by version at all. You'll see that caniuse.com lists all Chrome Android traffic as coming from the latest release version of Chrome. There's a filed issue about this, here: https://github.com/Fyrd/caniuse/issues/3518
+StatCounter lists all Android Chrome as "Chrome for Android," without breaking it down by version at all. You'll see that caniuse.com lists all Chrome Android traffic as coming from the latest release version of Chrome, v113. There's a filed issue about this, here: https://github.com/Fyrd/caniuse/issues/3518
 
-We know for sure that this can't be right, because if you're on Android 6 (2015) or below, you can't upgrade to the latest version of Google Chrome. <https://en.wikipedia.org/wiki/Template:Google_Chrome_release_compatibility>
+We know for sure that Chrome 113 doesn't have 100% of Android Chrome market share, because if you're on Android 6 (2015) or below, you can't upgrade to the latest version of Google Chrome. <https://en.wikipedia.org/wiki/Template:Google_Chrome_release_compatibility>
 
 StatCounter does provide an Android Version Market Share report. <https://gs.statcounter.com/android-version-market-share/> (Note that this report is about Android OS versions, *not* browser versions.)
 
@@ -191,8 +182,183 @@ Why does it take so long to achieve 98% market share? There are a few reasons:
 * Even users who can upgrade often upgrade slowly. It's common for iOS users to upgrade annually, if that.
 * There are a bunch of weird old browsers out there. Internet Explorer, Opera Mini, UC Browser… these add up to 1% market share all by themselves.
 
+# Update: Cohort Analysis
+
+`baseline-calculotar.mjs` now accepts a command-line argument, allowing you to specify a "cohort year." For example, `--cohort=2016` will consider all/only features whose keystone release date was in 2016. (It works by string comparison, so you can even pass a cohort _month_ if you want, like this: `--cohort-2016-08`)
+
+How does it look?
+<details><summary>Cohorts by year for eight years (with some funny business around 2015, and cohort by month for April 2021)</summary>
+<p>
+Here are the cohorts:
+
+## 2015
+
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
+---|---|---|---|---|---|---|---|---
+80% share|0 months|4 months|11 months|18 months|21 months|26 months|29 months|29 months
+90% share|11 months|21 months|21 months|31 months|42 months|44 months|44 months|59 months
+95% share|32 months|44 months|48 months|56 months|56 months|56 months|56 months|59 months
+97% share|46 months|56 months|63 months|70 months|73 months|76 months|83 months|85 months
+98% share|58 months|70 months|73 months|never|never|never|never|never
+99% share|never|never|never|never|never|never|never|never
+
+### Excluding Edge 12 keystones
+
+We're treating "Edge" as a "major browser," but Edge's first release was Edge 12 in 2015, so a bunch of features have a keystone release date matching Edge 12's release date in July 2015. I've published a branch, `exclude-edge-12-keystones`, which excludes those.
+
+In that branch, there are only 200 Baselineable features (instead of 311), and, focusing just on those features, the all-cohort table looks like this:
+
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
+---|---|---|---|---|---|---|---|---
+80% share|0 months|2 months|5 months|17 months|19 months|24 months|59 months|never
+90% share|7 months|21 months|24 months|42 months|never|never|never|never
+95% share|30 months|47 months|54 months|never|never|never|never|never
+97% share|never|never|never|never|never|never|never|never
+98% share|never|never|never|never|never|never|never|never
+99% share|never|never|never|never|never|never|never|never
+
+On that branch, the 2015 table looks like this:
+
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
+---|---|---|---|---|---|---|---|---
+80% share|12 months|18 months|19 months|29 months|59 months|59 months|59 months|59 months
+90% share|23 months|42 months|42 months|42 months|59 months|59 months|59 months|59 months
+95% share|46 months|54 months|54 months|56 months|59 months|59 months|59 months|59 months
+97% share|66 months|74 months|83 months|85 months|87 months|87 months|87 months|87 months
+98% share|91 months|never|never|never|never|never|never|never
+99% share|never|never|never|never|never|never|never|never
+
+## 2016
+
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
+---|---|---|---|---|---|---|---|---
+80% share|12 months|17 months|19 months|20 months|23 months|23 months|23 months|23 months
+90% share|30 months|32 months|36 months|36 months|37 months|37 months|37 months|37 months
+95% share|44 months|47 months|48 months|48 months|53 months|53 months|53 months|53 months
+97% share|72 months|never|never|never|never|never|never|never
+98% share|never|never|never|never|never|never|never|never
+99% share|never|never|never|never|never|never|never|never
+
+## 2017
+
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
+---|---|---|---|---|---|---|---|---
+80% share|1 months|10 months|10 months|13 months|18 months|24 months|24 months|24 months
+90% share|17 months|24 months|24 months|25 months|29 months|44 months|44 months|44 months
+95% share|35 months|43 months|44 months|44 months|47 months|57 months|57 months|57 months
+97% share|65 months|never|never|never|never|never|never|never
+98% share|never|never|never|never|never|never|never|never
+99% share|never|never|never|never|never|never|never|never
+
+## 2018
+
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
+---|---|---|---|---|---|---|---|---
+80% share|0 months|1 months|4 months|6 months|8 months|10 months|10 months|10 months
+90% share|12 months|15 months|16 months|18 months|20 months|35 months|35 months|35 months
+95% share|28 months|35 months|36 months|40 months|40 months|47 months|47 months|47 months
+97% share|never|never|never|never|never|never|never|never
+98% share|never|never|never|never|never|never|never|never
+99% share|never|never|never|never|never|never|never|never
+
+## 2019
+
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
+---|---|---|---|---|---|---|---|---
+80% share|0 months|2 months|2 months|20 months|20 months|20 months|20 months|20 months
+90% share|7 months|14 months|14 months|29 months|29 months|29 months|29 months|29 months
+95% share|22 months|40 months|40 months|never|never|never|never|never
+97% share|never|never|never|never|never|never|never|never
+98% share|never|never|never|never|never|never|never|never
+99% share|never|never|never|never|never|never|never|never
+
+## 2020
+
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
+---|---|---|---|---|---|---|---|---
+80% share|0 months|0 months|0 months|2 months|3 months|6 months|6 months|16 months
+90% share|0 months|6 months|8 months|10 months|13 months|16 months|16 months|16 months
+95% share|10 months|30 months|30 months|33 months|33 months|never|never|never
+97% share|never|never|never|never|never|never|never|never
+98% share|never|never|never|never|never|never|never|never
+99% share|never|never|never|never|never|never|never|never
+
+## 2021
+
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
+---|---|---|---|---|---|---|---|---
+80% share|0 months|1 months|2 months|2 months|2 months|2 months|2 months|2 months
+90% share|3 months|8 months|10 months|13 months|14 months|14 months|14 months|14 months
+95% share|never|never|never|never|never|never|never|never
+97% share|never|never|never|never|never|never|never|never
+98% share|never|never|never|never|never|never|never|never
+99% share|never|never|never|never|never|never|never|never
+
+### April 2021
+
+```
+node baseline-calculator.mjs --cohort=2021-04
+```
+
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
+---|---|---|---|---|---|---|---|---
+80% share|0 months|2 months|2 months|2 months|2 months|2 months|2 months|2 months
+90% share|3 months|5 months|14 months|14 months|14 months|14 months|14 months|14 months
+95% share|25 months|25 months|never|never|never|never|never|never
+97% share|never|never|never|never|never|never|never|never
+98% share|never|never|never|never|never|never|never|never
+99% share|never|never|never|never|never|never|never|never
+
+## 2022
+
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
+---|---|---|---|---|---|---|---|---
+80% share|1 months|2 months|2 months|2 months|2 months|3 months|3 months|3 months
+90% share|5 months|14 months|never|never|never|never|never|never
+95% share|never|never|never|never|never|never|never|never
+97% share|never|never|never|never|never|never|never|never
+98% share|never|never|never|never|never|never|never|never
+99% share|never|never|never|never|never|never|never|never
+
+## 2023
+
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
+---|---|---|---|---|---|---|---|---
+80% share|1 months|never|never|never|never|never|never|never
+90% share|never|never|never|never|never|never|never|never
+95% share|never|never|never|never|never|never|never|never
+97% share|never|never|never|never|never|never|never|never
+98% share|never|never|never|never|never|never|never|never
+99% share|never|never|never|never|never|never|never|never
+
+
+
+</p>
+</details> 
+
+That's a lot of tables, so, here's just the "80% features" column, by cohort year (excluding the Edge 12 keystones):
+
+Year|80% share|90% share|95% share|97% share|98% share|99% share
+---|---|---|---|---|---|---
+2015|19 months|42 months|54 months|83 months|never|never
+2016|19 months|36 months|48 months|never|never|never
+2017|10 months|24 months|44 months|never|never|never
+2018|4 months|16 months|36 months|never|never|never
+2019|2 months|14 months|40 months|never|never|never
+2020|0 months|8 months|30 months|never|never|never
+2021|2 months|10 months|never|never|never|never
+2022|2 months|never|never|never|never|never
+2023|never|never|never|never|never|never
+
+## Interpretation of Cohort Analysis: It's improving!
+
+Every column shows improvement over time. Next year, we might find that the 2021 cohort has an even better result.
+
+(Based on the "April 2021" cohort above, I predict that 2021's features will reach 95% market share in less than 30 months, but closer to 30 than 24.)
+
 # Conclusion: Baseline can and should be time-based
 
 * **We should change the goal for the Baseline definition.** The current goal for the definition of Baseline is to set a guideline that "works for most developers most of the time." I've argued elsewhere that [this goal has no meaning](https://github.com/web-platform-dx/feature-set/issues/174#issuecomment-1544481323), that it's impossible use data to argue whether a feature does or doesn't work for most developers (or any developer) most of the time.
 * **The new goal should be "80% of features with 95% market share."** That is, we should say "Baseline means that a feature has been supported in all major browsers for N months." And then, we should choose an N such that 80% of features have achieved 95% market share in that time. I picked the numbers 80 and 95 just because they feel reasonable to me.
-* **Baseline should therefore be defined as features that have been available in all major browsers for at least 48 months (four years).** The data shows that four years is the amount of time it takes to hit these targets. We can probably revisit this calculation every few years. If, in 2027, we find that 80% of features achieve 95% market share in 36 months, we can redefine Baseline as three years then.
+* **We should consider only the latest cohort year for determining "N" months.** 80% of 2015's Baselineable features took 54 months to reach 95% market share. 80% of 2020's Baselineable features took just 30 months to get there. Based on this data, we should define Baseline based on the latest cohort year in which 80% of features have achieved 95% market share. Currently, that's 30 months for 2020, but we can update this in future years based on new data.
+* **Therefore, in 2023, Baseline should be defined as features that have been available in all major browsers for at least 30 months (2.5 years).**
