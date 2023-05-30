@@ -51,13 +51,11 @@ This repository is intended to answer that question:
 
 # Methodology
 
-## Data Sources: MDN browser-compat-data (BCD) and Caniuse
-
-MDN makes browser compatibility data (BCD) available via Github. https://github.com/mdn/browser-compat-data (This repository only uses BCD's records of browser version release dates.)
+## Data Source: Caniuse and StatCounter
 
 Caniuse.com makes its data available via Github under a CC-BY-4.0 license. https://github.com/fyrd/caniuse The data is in `data.json`. We're very grateful to have access to this treasure trove of data.
 
-Caniuse data combines market-share data from [StatCounter](https://gs.statcounter.com) with BCD's data, and gives each web feature a unique ID that we can use to track its availability over time.
+Caniuse data pulls its market-share data from [StatCounter](https://gs.statcounter.com).
 
 ## "Keystone" Release Date: The date a feature first became available in all major browsers
 
@@ -71,11 +69,9 @@ For example, the [CSS revert value](https://caniuse.com/css-revert-value) featur
 
 So, in this example, Edge was the "keystone browser" for the feature; Edge 83 was the "keystone version," and the "keystone release date" was May 20, 2020.
 
-(Strangely, release dates are visible on caniuse.com, but not available in `data.json`. I've filed this as <https://github.com/Fyrd/caniuse/issues/6726>.) 
-
 This repository includes a Node script, `compute-keystone-release-dates.mjs`, which generated `keystone-release-dates.json`, which is also checked in.
 
-`compute-keystone-release-dates.mjs` uses the feature data from Caniuse's `data.json`, finds all of the features that are currently available in all major browsers, then pulls the release date information from BCD to generate `keystone-release-dates.json`.
+`compute-keystone-release-dates.mjs` uses the feature data from Caniuse's `data-2.0.json`, finds all of the features that are currently available in all major browsers, then computes the keystone release date for those features, generating `keystone-release-dates.json`.
 
 ## Historical Market Share
 
@@ -106,7 +102,7 @@ Then, we compute the 80th percentile, i.e. how long it took 80% of Baselineable 
 
 ## Submodules
 
-We gather data from `caniuse` and `browser-compat-data` via Github submodules. The first step is to populate those submodules, like this:
+We gather data from `caniuse` via a Github submodule. The first step is to populate the submodule, like this:
 
 ```
 git submodule update --init --recursive
