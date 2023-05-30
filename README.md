@@ -79,6 +79,22 @@ We gather historical market share data from the Git history of the Caniuse `data
 
 `compute-historical-share.mjs` pulls the `git log` of `data.json`, then uses `git checkout` to view it at every commit in its history. We track the timestamp of the commit and the market share of each feature in the commit in `historical-feature-data.json`.
 
+### There's a catch: StatCounter/Caniuse doesn't track Android Chrome versions
+
+<https://gs.statcounter.com/browser-version-market-share>
+
+StatCounter lists all Android Chrome as "Chrome for Android," without breaking it down by version at all. You'll see that caniuse.com lists all Chrome Android traffic as coming from the latest release version of Chrome. There's a filed issue about this, here: https://github.com/Fyrd/caniuse/issues/3518
+
+We know for sure that this can't be right, because if you're on Android 6 (2015) or below, you can't upgrade to the latest version of Google Chrome. <https://en.wikipedia.org/wiki/Template:Google_Chrome_release_compatibility>
+
+StatCounter does provide an Android Version Market Share report. <https://gs.statcounter.com/android-version-market-share/> (Note that this report is about Android OS versions, *not* browser versions.)
+
+In May 2023, Android 6 is 1.67% of Android traffic, and "Other" is about 3% more. StatCounter says that Chrome for Android is around 40% of global traffic; if we assume that 5% of those 40 points are on very old versions of Android, then roughly 2% of global traffic is falsely reported as belonging to the latest version of Google Chrome, when, in fact, they're on older versions.
+
+But we do have a partial mitigation: although the current `HEAD` revision of caniuse `data.json` does not include accurate historical data about Android Chrome, we're measuring historical data by checking out old revisions of `data.json`, and those old revisions _are_ accurate about the then-current version of Android Chrome as it was at the time. (But they were wrong even then about then-obsolete versions of Chrome.)
+
+I don't think that this will fundamentally alter the final results, but, if we're concerned about it, we could try to investigate another data source, e.g. Akamai's RUM Archive. https://github.com/rum-archive/rum-archive
+
 ## Baseline Calculator
 
 `baseline-calculator.mjs` does the work here, based on `keystone-release-dates.json`, `historical-feature-data.json`, and caniuse's `data.json`.
