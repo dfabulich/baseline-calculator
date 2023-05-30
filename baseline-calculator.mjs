@@ -80,7 +80,7 @@ const results = Object.fromEntries(targetMarketShares.map(targetMarketShare => {
     debugger;
     const result = [targetMarketShare, targetConversions.map(targetConversion => {
         if ((daysToTarget.length / keystoneFeatures.length) < (targetConversion/100)) return "never";
-        const index = Math.ceil(keystoneFeatures.length * (targetConversion/100));
+        const index = Math.ceil(keystoneFeatures.length * (targetConversion/100)) - 1;
         return Math.round(daysToTarget[index].daysToTarget / 30) + " months";
     })]
 
