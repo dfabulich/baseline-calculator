@@ -53,7 +53,7 @@ This repository is intended to answer that question:
 
 ## Data Source: Caniuse and StatCounter
 
-Caniuse.com makes its data available via Github under a CC-BY-4.0 license. https://github.com/fyrd/caniuse The data is in `data.json`. We're very grateful to have access to this treasure trove of data.
+Caniuse.com makes its data available via Github under a CC-BY-4.0 license. https://github.com/fyrd/caniuse The data is in `data.json`. (Browser release dates are in `data-2.0.json`, but `data.json` has a longer git history.) We're very grateful to have access to this treasure trove of data.
 
 Caniuse data pulls its market-share data from [StatCounter](https://gs.statcounter.com).
 
@@ -65,9 +65,9 @@ We'll call that last major browser to support the feature the "keystone browser.
 
 The "keystone version" is the version that makes its browser the keystone, and the "keystone release date" is the release date of the keystone version.
 
-For example, the [CSS revert value](https://caniuse.com/css-revert-value) feature was first available in Safari 9.1 in 2016, then in Firefox 67 in 2019, then Chrome 83 on May 18, 2020, then in Edge 83 on May 20, 2020.
+For example, the [CSS revert value](https://caniuse.com/css-revert-value) feature was first available in Safari 9.1 in 2016, then in Firefox 67 in 2019, then Chrome 84 on July 14, 2020, then in Edge 84 on July 16, 2020.
 
-So, in this example, Edge was the "keystone browser" for the feature; Edge 83 was the "keystone version," and the "keystone release date" was May 20, 2020.
+So, in this example, Edge was the "keystone browser" for the feature; Edge 84 was the "keystone version," and the "keystone release date" was July 16, 2020.
 
 This repository includes a Node script, `compute-keystone-release-dates.mjs`, which generated `keystone-release-dates.json`, which is also checked in.
 

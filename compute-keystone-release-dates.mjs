@@ -46,11 +46,11 @@ for (const id in features) {
                     const releaseDate = agents[browser].version_list.find(v => v.version === version).release_date;
                     const dateString = new Date(releaseDate * 1000).toISOString().slice(0, 10);
                     
-                    //console.log('  ', id, browser, version, dateString);
+                    //console.log('    ', id, browser, version, dateString);
                     return {version, releaseDate: dateString};
                 })
                 .sort((a,b) => a.releaseDate.localeCompare(b.releaseDate));
-            //console.log(id, browser, version, releaseDate);
+            console.log('  ', id, browser, version, releaseDate);
             return {browser, version, releaseDate};
         });
     const {browser, version, releaseDate} = browserReleaseDates.sort((a,b) => a.releaseDate.localeCompare(b.releaseDate)).at(-1);
