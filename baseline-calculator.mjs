@@ -76,6 +76,10 @@ const keystoneFeatures = Object.keys(keystoneReleaseDates).filter(feature => {
     return keystoneReleaseDates[feature].startsWith(cohort);
 })
 
+if (cohort) {
+    console.log(`Cohort ${cohort}: ${keystoneFeatures.length} feature(s)\n`);
+}
+
 const results = Object.fromEntries(targetMarketShares.map(targetMarketShare => {
     const daysToTarget = keystoneFeatures.filter(feature =>
         Number(features[feature].usage_perc_y) >= targetMarketShare

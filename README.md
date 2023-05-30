@@ -2,7 +2,7 @@
 
 How long does it take for web features to achieve widespread availability?
 
-**tl;dr: The features released in 2020 took 30 months to achieve 95% market share.**
+**tl;dr: 65 features became eligible for Baseline in 2020. 80% of those features achieved 95% market share in 30 months.**
 
 # Background: How should "Baseline" be defined?
 
@@ -191,7 +191,7 @@ How does it look?
 <p>
 Here are the cohorts:
 
-## 2015
+## 2015: 112 features
 
 Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
 ---|---|---|---|---|---|---|---|---
@@ -202,7 +202,7 @@ Market Share|50% of features|75% of features|80% of features|90% of features|95%
 98% share|58 months|70 months|73 months|never|never|never|never|never
 99% share|never|never|never|never|never|never|never|never
 
-### Excluding Edge 12 keystones
+### Excluding Edge 12 keystones: 12 features
 
 We're treating "Edge" as a "major browser," but Edge's first release was Edge 12 in 2015, so a bunch of features have a keystone release date matching Edge 12's release date in July 2015. I've published a branch, `exclude-edge-12-keystones`, which excludes those.
 
@@ -228,7 +228,7 @@ Market Share|50% of features|75% of features|80% of features|90% of features|95%
 98% share|91 months|never|never|never|never|never|never|never
 99% share|never|never|never|never|never|never|never|never
 
-## 2016
+## 2016: 19 features
 
 Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
 ---|---|---|---|---|---|---|---|---
@@ -239,7 +239,7 @@ Market Share|50% of features|75% of features|80% of features|90% of features|95%
 98% share|never|never|never|never|never|never|never|never
 99% share|never|never|never|never|never|never|never|never
 
-## 2017
+## 2017: 31 features
 
 Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
 ---|---|---|---|---|---|---|---|---
@@ -250,7 +250,7 @@ Market Share|50% of features|75% of features|80% of features|90% of features|95%
 98% share|never|never|never|never|never|never|never|never
 99% share|never|never|never|never|never|never|never|never
 
-## 2018
+## 2018: 22 features
 
 Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
 ---|---|---|---|---|---|---|---|---
@@ -261,7 +261,7 @@ Market Share|50% of features|75% of features|80% of features|90% of features|95%
 98% share|never|never|never|never|never|never|never|never
 99% share|never|never|never|never|never|never|never|never
 
-## 2019
+## 2019: 7 features
 
 Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
 ---|---|---|---|---|---|---|---|---
@@ -272,7 +272,7 @@ Market Share|50% of features|75% of features|80% of features|90% of features|95%
 98% share|never|never|never|never|never|never|never|never
 99% share|never|never|never|never|never|never|never|never
 
-## 2020
+## 2020: 65 features
 
 Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
 ---|---|---|---|---|---|---|---|---
@@ -283,7 +283,7 @@ Market Share|50% of features|75% of features|80% of features|90% of features|95%
 98% share|never|never|never|never|never|never|never|never
 99% share|never|never|never|never|never|never|never|never
 
-## 2021
+## 2021: 13 features
 
 Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
 ---|---|---|---|---|---|---|---|---
@@ -294,7 +294,7 @@ Market Share|50% of features|75% of features|80% of features|90% of features|95%
 98% share|never|never|never|never|never|never|never|never
 99% share|never|never|never|never|never|never|never|never
 
-### April 2021
+### April 2021: 4 features
 
 ```
 node baseline-calculator.mjs --cohort=2021-04
@@ -309,7 +309,7 @@ Market Share|50% of features|75% of features|80% of features|90% of features|95%
 98% share|never|never|never|never|never|never|never|never
 99% share|never|never|never|never|never|never|never|never
 
-## 2022
+## 2022: 20 features
 
 Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
 ---|---|---|---|---|---|---|---|---
@@ -320,7 +320,7 @@ Market Share|50% of features|75% of features|80% of features|90% of features|95%
 98% share|never|never|never|never|never|never|never|never
 99% share|never|never|never|never|never|never|never|never
 
-## 2023
+## 2023: 11 features
 
 Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
 ---|---|---|---|---|---|---|---|---
