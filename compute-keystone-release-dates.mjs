@@ -54,8 +54,12 @@ for (const id in features) {
             return {browser, version, releaseDate};
         });
     const {browser, version, releaseDate} = browserReleaseDates.sort((a,b) => a.releaseDate.localeCompare(b.releaseDate)).at(-1);
-    console.log(id, browser, version, releaseDate);
-    keystoneReleaseDates[id] = releaseDate;
+    if (browser === 'edge' && version === '12') {
+        console.log('SKIPPING', id, browser, version, releaseDate);
+    } else {
+        console.log(id, browser, version, releaseDate);
+        keystoneReleaseDates[id] = releaseDate;
+    }
 }
 
 writeFileSync('keystone-release-dates.json', JSON.stringify(keystoneReleaseDates, null, 2), 'utf8');
