@@ -1,5 +1,12 @@
 #!/usr/bin/env node
 import {readFileSync} from 'node:fs';
+import {parseArgs} from 'node:util';
+
+let { values: {cohort} } = parseArgs({
+    options: {
+        cohort: { type: 'string' }
+    }
+})
 
 const {data: features} = JSON.parse(readFileSync('caniuse/data.json', 'utf8'));
 const keystoneReleaseDates = JSON.parse(readFileSync('keystone-release-dates.json', 'utf8'));
@@ -64,7 +71,10 @@ function caniuseLink(featureId) {
     return `[${featureId}](https://caniuse.com/${featureId})`
 }
 
-const keystoneFeatures = Object.keys(keystoneReleaseDates);
+const keystoneFeatures = Object.keys(keystoneReleaseDates).filter(feature => {
+    if (!cohort) return true;
+    return keystoneReleaseDates[feature].startsWith(cohort);
+})
 
 const results = Object.fromEntries(targetMarketShares.map(targetMarketShare => {
     const daysToTarget = keystoneFeatures.filter(feature =>
