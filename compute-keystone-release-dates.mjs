@@ -10,6 +10,7 @@ const majorBrowsers = [
     'firefox',
     'and_chr',
     'ios_saf',
+    'samsung',
 ]
 
 const browserVersions = {};
