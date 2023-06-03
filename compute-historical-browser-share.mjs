@@ -6,7 +6,10 @@ const historicalBrowserData = {};
 
 const output = execSync('git log --format=%h,%at -- data.json', { cwd: 'caniuse' , encoding: 'utf8'});
 
-const revisions = Object.fromEntries(output.trim().split('\n').map(line => line.split(',')));
+const revisions = Object.fromEntries(output.trim().split('\n').map(line => {
+    const [revision, timestamp] = line.split(',');
+    return [revision, Number.parseInt(timestamp)];
+}));
 
 for (const revision in revisions) {
     const timestamp = revisions[revision];
