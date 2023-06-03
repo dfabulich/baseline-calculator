@@ -91,7 +91,7 @@ for (const startIndex of months.keys()) {
 
     // Identify the version of each browser where the feature was first available.
     // This is done up front to make it simpler to determine if each release has
-    // the feature later based on the version, not the release date.
+    // the feature based on the version, not the release date.
     const launchVersions = {};
     for (const browser of browsers) {
         launchVersions[browser] = getVersionAfter(browser, launchDate);
