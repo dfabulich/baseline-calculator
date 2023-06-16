@@ -1,312 +1,1002 @@
 {
-  "abortcontroller": "2019-03-25",
-  "addeventlistener": "2015-07-29",
-  "apng": "2020-01-15",
-  "array-find": "2017-04-11",
-  "array-find-index": "2015-09-02",
-  "array-flat": "2020-01-15",
-  "array-includes": "2016-08-02",
-  "arrow-functions": "2016-09-20",
-  "async-functions": "2017-09-19",
-  "atob-btoa": "2015-07-29",
-  "audio": "2015-07-29",
-  "audio-api": "2021-04-26",
-  "background-img-opts": "2015-07-29",
-  "background-position-x-y": "2016-09-20",
-  "background-repeat-round-space": "2016-09-20",
-  "beacon": "2018-03-29",
-  "beforeafterprint": "2019-09-19",
-  "bigint": "2020-09-16",
-  "blobbuilder": "2015-07-29",
-  "bloburls": "2017-04-11",
-  "border-image": "2022-03-14",
-  "border-radius": "2016-11-15",
-  "broadcastchannel": "2022-03-14",
-  "brotli": "2019-09-19",
-  "calc": "2015-07-29",
-  "canvas": "2015-07-29",
-  "canvas-blending": "2015-11-12",
-  "canvas-text": "2015-07-29",
-  "ch-unit": "2015-07-29",
-  "chacha20-poly1305": "2020-01-15",
-  "channel-messaging": "2015-09-22",
-  "childnode-remove": "2015-11-12",
-  "classlist": "2015-07-29",
-  "comparedocumentposition": "2016-09-20",
-  "console-time": "2015-07-29",
-  "const": "2017-09-19",
-  "constraint-validation": "2018-04-30",
-  "contenteditable": "2015-07-29",
-  "contentsecuritypolicy": "2015-07-29",
-  "contentsecuritypolicy2": "2020-01-15",
-  "cryptography": "2020-01-15",
-  "css-all": "2020-01-15",
-  "css-animation": "2015-10-01",
-  "css-any-link": "2020-01-15",
-  "css-appearance": "2022-03-14",
-  "css-background-offsets": "2015-07-29",
-  "css-backgroundblendmode": "2020-01-15",
-  "css-boxshadow": "2015-07-29",
-  "css-caret-color": "2020-01-15",
-  "css-cascade-layers": "2022-03-14",
-  "css-case-insensitive": "2020-01-15",
-  "css-color-function": "2023-05-09",
-  "css-conic-gradients": "2020-11-17",
-  "css-container-queries": "2023-02-14",
-  "css-container-query-units": "2023-02-14",
-  "css-containment": "2022-03-14",
-  "css-counters": "2015-07-29",
-  "css-default-pseudo": "2020-01-15",
-  "css-env-function": "2020-01-15",
-  "css-featurequeries": "2015-10-01",
-  "css-filters": "2020-01-15",
-  "css-first-letter": "2015-07-29",
-  "css-first-line": "2015-07-29",
-  "css-fixed": "2015-07-29",
-  "css-focus-visible": "2022-03-14",
-  "css-focus-within": "2020-01-15",
-  "css-font-palette": "2022-11-15",
-  "css-font-rendering-controls": "2020-01-15",
-  "css-font-stretch": "2017-09-19",
-  "css-gencontent": "2015-07-29",
-  "css-gradients": "2022-03-14",
-  "css-grid": "2017-10-17",
-  "css-image-orientation": "2021-03-04",
-  "css-in-out-of-range": "2020-01-15",
-  "css-indeterminate-pseudo": "2020-01-15",
-  "css-initial-value": "2015-07-29",
-  "css-lch-lab": "2023-05-09",
-  "css-letter-spacing": "2015-07-29",
-  "css-logical-props": "2021-09-20",
-  "css-matches-pseudo": "2021-01-23",
-  "css-math-functions": "2020-04-08",
-  "css-media-interaction": "2018-12-11",
-  "css-media-range-syntax": "2023-03-27",
-  "css-media-resolution": "2022-09-12",
-  "css-mediaqueries": "2015-07-29",
-  "css-motion-paths": "2022-09-12",
-  "css-namespaces": "2015-07-29",
-  "css-not-sel-list": "2021-01-23",
-  "css-nth-child-of": "2023-05-09",
-  "css-opacity": "2015-07-29",
-  "css-optional-pseudo": "2015-07-29",
-  "css-overflow": "2022-09-12",
-  "css-overscroll-behavior": "2022-09-12",
-  "css-placeholder": "2020-01-15",
-  "css-placeholder-shown": "2020-01-15",
-  "css-read-only-write": "2020-06-30",
-  "css-rebeccapurple": "2015-07-29",
-  "css-repeating-gradients": "2015-07-29",
-  "css-revert-value": "2020-07-16",
-  "css-rrggbbaa": "2020-01-15",
-  "css-sel2": "2015-07-29",
-  "css-sel3": "2015-07-29",
-  "css-shapes": "2020-01-15",
-  "css-snappoints": "2020-01-15",
-  "css-sticky": "2021-05-27",
-  "css-supports-api": "2020-01-15",
-  "css-table": "2015-07-29",
-  "css-text-align-last": "2022-09-12",
-  "css-text-orientation": "2020-09-16",
-  "css-textshadow": "2020-01-15",
-  "css-transitions": "2015-07-29",
-  "css-unset-value": "2016-03-21",
-  "css-variables": "2017-10-17",
-  "css-writing-mode": "2017-09-19",
-  "css3-boxsizing": "2015-07-29",
-  "css3-colors": "2015-07-29",
-  "css3-tabsize": "2021-08-10",
-  "currentcolor": "2015-07-29",
-  "customevent": "2015-07-29",
-  "datauri": "2020-01-15",
-  "date-tolocaledatestring": "2018-11-13",
-  "details": "2020-01-15",
-  "devicepixelratio": "2015-07-29",
-  "dialog": "2022-03-14",
-  "dispatchevent": "2015-07-29",
-  "document-currentscript": "2015-07-29",
-  "document-evaluate-xpath": "2015-07-29",
-  "document-execcommand": "2015-07-29",
-  "document-scrollingelement": "2016-08-02",
-  "documenthead": "2015-07-29",
-  "dom-manip-convenience": "2018-04-30",
-  "dom-range": "2015-07-29",
-  "domcontentloaded": "2015-07-29",
-  "download": "2019-09-19",
-  "element-closest": "2017-04-11",
-  "element-from-point": "2015-07-29",
-  "element-scroll-methods": "2021-04-26",
-  "eme": "2018-09-17",
-  "es5": "2015-07-29",
-  "es6-class": "2016-03-08",
-  "es6-generators": "2016-09-20",
-  "es6-module": "2020-01-15",
-  "es6-module-dynamic-import": "2020-01-15",
-  "es6-number": "2015-10-01",
-  "es6-string-includes": "2015-10-01",
-  "eventsource": "2020-01-15",
-  "fetch": "2017-03-27",
-  "fieldset-disabled": "2015-07-29",
-  "fileapi": "2020-01-15",
-  "filereader": "2015-07-29",
-  "filereadersync": "2015-07-29",
-  "flac": "2019-09-19",
-  "flexbox": "2015-10-01",
-  "flexbox-gap": "2021-04-26",
-  "flow-root": "2020-01-15",
-  "focusin-focusout-events": "2017-03-07",
-  "font-family-system-ui": "2021-09-07",
-  "font-feature": "2016-03-21",
-  "font-kerning": "2020-01-15",
-  "font-loading": "2020-01-15",
-  "font-unicode-range": "2018-04-30",
-  "font-variant-alternates": "2023-03-13",
-  "font-variant-numeric": "2020-01-15",
-  "fontface": "2015-07-29",
-  "form-attribute": "2017-10-17",
-  "form-submit-attributes": "2015-07-29",
-  "form-validation": "2017-03-27",
-  "gamepad": "2017-03-27",
-  "getboundingclientrect": "2020-01-15",
-  "getcomputedstyle": "2015-07-29",
-  "getelementsbyclassname": "2015-07-29",
-  "getrandomvalues": "2015-07-29",
-  "hashchange": "2015-07-29",
-  "hidden": "2015-07-29",
-  "high-resolution-time": "2015-07-29",
-  "history": "2015-07-29",
-  "html5semantic": "2015-07-29",
-  "iframe-sandbox": "2015-07-29",
-  "iframe-srcdoc": "2020-01-15",
-  "img-naturalwidth-naturalheight": "2015-07-29",
-  "import-maps": "2023-03-27",
-  "indeterminate-checkbox": "2019-03-25",
-  "indexeddb": "2020-01-15",
-  "indexeddb2": "2020-01-15",
-  "inline-block": "2015-07-29",
-  "innertext": "2016-03-08",
-  "input-email-tel-url": "2015-07-29",
-  "input-event": "2020-03-24",
-  "input-minlength": "2018-04-30",
-  "input-pattern": "2017-03-27",
-  "input-placeholder": "2015-07-29",
-  "input-range": "2015-07-29",
-  "input-selection": "2015-07-29",
-  "insert-adjacent": "2016-08-02",
-  "insertadjacenthtml": "2015-07-29",
-  "internationalization": "2016-09-20",
-  "intl-pluralrules": "2020-01-15",
-  "js-regexp-lookbehind": "2023-03-27",
-  "json": "2015-07-29",
-  "justify-content-space-evenly": "2020-01-15",
-  "kerning-pairs-ligatures": "2018-11-13",
-  "keyboardevent-charcode": "2015-07-29",
-  "keyboardevent-getmodifierstate": "2017-03-27",
-  "keyboardevent-key": "2020-01-15",
-  "keyboardevent-location": "2015-07-29",
-  "let": "2017-09-19",
-  "link-icon-png": "2018-09-17",
-  "link-rel-preload": "2021-01-26",
-  "localecompare": "2016-09-20",
-  "matchesselector": "2017-04-11",
-  "matchmedia": "2015-07-29",
-  "mediarecorder": "2021-04-26",
-  "meter": "2017-03-27",
-  "minmaxwh": "2015-07-29",
-  "mp3": "2015-07-29",
-  "mpeg4": "2015-07-29",
-  "multibackgrounds": "2015-07-29",
-  "mutationobserver": "2015-07-29",
-  "namevalue-storage": "2015-07-29",
-  "nav-timing": "2015-07-29",
-  "object-entries": "2017-03-27",
-  "object-fit": "2020-01-15",
-  "object-values": "2017-03-27",
-  "offscreencanvas": "2023-03-27",
-  "ol-reversed": "2020-01-15",
-  "once-event-listener": "2017-10-17",
-  "online-status": "2015-07-29",
-  "outline": "2017-04-11",
-  "pad-start-end": "2017-04-11",
-  "page-transition-events": "2015-07-29",
-  "pagevisibility": "2015-07-29",
-  "passive-event-listener": "2017-10-17",
-  "path2d": "2020-01-15",
-  "permissions-api": "2022-09-12",
-  "picture": "2016-03-21",
-  "png-alpha": "2015-07-29",
-  "pointer": "2019-10-28",
-  "pointer-events": "2015-07-29",
-  "prefers-color-scheme": "2020-01-15",
-  "prefers-reduced-motion": "2020-01-15",
-  "progress": "2015-07-29",
-  "promise-finally": "2018-11-13",
-  "promises": "2015-07-29",
-  "proxy": "2016-09-20",
-  "queryselector": "2015-07-29",
-  "readonly-attr": "2015-07-29",
-  "rel-noopener": "2020-01-15",
-  "rel-noreferrer": "2015-11-12",
-  "rellist": "2018-11-13",
-  "rem": "2015-07-29",
-  "requestanimationframe": "2015-07-29",
-  "resizeobserver": "2020-03-24",
-  "resource-timing": "2018-03-29",
-  "rest-parameters": "2016-09-20",
-  "rtcpeerconnection": "2020-01-15",
-  "screen-orientation": "2023-03-27",
-  "script-async": "2015-07-29",
-  "script-defer": "2015-07-29",
-  "scrollintoview": "2022-09-12",
-  "serviceworkers": "2018-04-30",
-  "shadowdomv1": "2020-01-15",
-  "sni": "2015-07-29",
-  "srcset": "2017-10-17",
-  "stricttransportsecurity": "2015-07-29",
-  "subresource-integrity": "2018-04-30",
-  "svg": "2020-01-15",
-  "svg-css": "2017-10-17",
-  "svg-filters": "2015-07-29",
-  "svg-fragment": "2018-03-29",
-  "svg-html5": "2018-04-30",
-  "svg-img": "2015-10-01",
-  "svg-smil": "2020-01-15",
-  "template": "2017-04-11",
-  "template-literals": "2016-03-21",
-  "text-emphasis": "2022-03-03",
-  "text-overflow": "2015-07-29",
-  "textcontent": "2015-07-29",
-  "textencoder": "2020-01-15",
-  "tls1-2": "2015-07-29",
-  "tls1-3": "2020-09-16",
-  "transforms2d": "2018-04-30",
-  "transforms3d": "2022-03-14",
-  "ttf": "2015-07-29",
-  "typedarrays": "2015-07-29",
-  "unhandledrejection": "2020-01-15",
-  "upgradeinsecurerequests": "2018-04-30",
-  "url": "2015-07-29",
-  "urlsearchparams": "2018-04-30",
-  "use-strict": "2015-07-29",
-  "user-timing": "2017-09-19",
-  "vector-effect": "2020-01-15",
-  "viewport-unit-variants": "2022-12-05",
-  "viewport-units": "2017-10-17",
-  "wasm": "2017-10-17",
-  "wav": "2015-07-29",
-  "wbr-element": "2015-07-29",
-  "webgl": "2020-01-15",
-  "webgl2": "2021-09-20",
-  "webp": "2022-09-12",
-  "websockets": "2015-07-29",
-  "webworkers": "2015-07-29",
-  "will-change": "2020-01-15",
-  "woff": "2015-07-29",
-  "woff2": "2018-09-17",
-  "word-break": "2015-10-01",
-  "wordwrap": "2018-11-13",
-  "x-doc-messaging": "2015-07-29",
-  "xhr2": "2015-07-29",
-  "xhtml": "2015-07-29",
-  "xml-serializer": "2015-07-29"
+  "abortcontroller": {
+    "browser": "safari",
+    "version": "12.1",
+    "releaseDate": "2019-03-25"
+  },
+  "apng": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "array-find": {
+    "browser": "edge",
+    "version": "15",
+    "releaseDate": "2017-04-11"
+  },
+  "array-find-index": {
+    "browser": "chrome",
+    "version": "45",
+    "releaseDate": "2015-09-02"
+  },
+  "array-flat": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "array-includes": {
+    "browser": "edge",
+    "version": "14",
+    "releaseDate": "2016-08-02"
+  },
+  "arrow-functions": {
+    "browser": "safari",
+    "version": "10",
+    "releaseDate": "2016-09-20"
+  },
+  "async-functions": {
+    "browser": "ios_saf",
+    "version": "11.0-11.2",
+    "releaseDate": "2017-09-19"
+  },
+  "audio-api": {
+    "browser": "ios_saf",
+    "version": "14.5-14.8",
+    "releaseDate": "2021-04-26"
+  },
+  "background-position-x-y": {
+    "browser": "firefox",
+    "version": "49",
+    "releaseDate": "2016-09-20"
+  },
+  "background-repeat-round-space": {
+    "browser": "firefox",
+    "version": "49",
+    "releaseDate": "2016-09-20"
+  },
+  "beacon": {
+    "browser": "ios_saf",
+    "version": "11.3-11.4",
+    "releaseDate": "2018-03-29"
+  },
+  "beforeafterprint": {
+    "browser": "ios_saf",
+    "version": "13.0-13.1",
+    "releaseDate": "2019-09-19"
+  },
+  "bigint": {
+    "browser": "ios_saf",
+    "version": "14.0-14.4",
+    "releaseDate": "2020-09-16"
+  },
+  "bloburls": {
+    "browser": "edge",
+    "version": "15",
+    "releaseDate": "2017-04-11"
+  },
+  "border-image": {
+    "browser": "ios_saf",
+    "version": "15.4",
+    "releaseDate": "2022-03-14"
+  },
+  "border-radius": {
+    "browser": "firefox",
+    "version": "50",
+    "releaseDate": "2016-11-15"
+  },
+  "broadcastchannel": {
+    "browser": "ios_saf",
+    "version": "15.4",
+    "releaseDate": "2022-03-14"
+  },
+  "brotli": {
+    "browser": "safari",
+    "version": "13",
+    "releaseDate": "2019-09-19"
+  },
+  "canvas-blending": {
+    "browser": "edge",
+    "version": "13",
+    "releaseDate": "2015-11-12"
+  },
+  "chacha20-poly1305": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "channel-messaging": {
+    "browser": "firefox",
+    "version": "41",
+    "releaseDate": "2015-09-22"
+  },
+  "childnode-remove": {
+    "browser": "edge",
+    "version": "13",
+    "releaseDate": "2015-11-12"
+  },
+  "comparedocumentposition": {
+    "browser": "safari",
+    "version": "10",
+    "releaseDate": "2016-09-20"
+  },
+  "const": {
+    "browser": "ios_saf",
+    "version": "11.0-11.2",
+    "releaseDate": "2017-09-19"
+  },
+  "constraint-validation": {
+    "browser": "edge",
+    "version": "17",
+    "releaseDate": "2018-04-30"
+  },
+  "contentsecuritypolicy2": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "cryptography": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-all": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-animation": {
+    "browser": "safari",
+    "version": "9",
+    "releaseDate": "2015-10-01"
+  },
+  "css-any-link": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-appearance": {
+    "browser": "ios_saf",
+    "version": "15.4",
+    "releaseDate": "2022-03-14"
+  },
+  "css-backgroundblendmode": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-caret-color": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-cascade-layers": {
+    "browser": "ios_saf",
+    "version": "15.4",
+    "releaseDate": "2022-03-14"
+  },
+  "css-case-insensitive": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-color-function": {
+    "browser": "firefox",
+    "version": "113",
+    "releaseDate": "2023-05-09"
+  },
+  "css-conic-gradients": {
+    "browser": "firefox",
+    "version": "83",
+    "releaseDate": "2020-11-17"
+  },
+  "css-container-queries": {
+    "browser": "firefox",
+    "version": "110",
+    "releaseDate": "2023-02-14"
+  },
+  "css-container-query-units": {
+    "browser": "firefox",
+    "version": "110",
+    "releaseDate": "2023-02-14"
+  },
+  "css-containment": {
+    "browser": "ios_saf",
+    "version": "15.4",
+    "releaseDate": "2022-03-14"
+  },
+  "css-default-pseudo": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-env-function": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-featurequeries": {
+    "browser": "safari",
+    "version": "9",
+    "releaseDate": "2015-10-01"
+  },
+  "css-filters": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-focus-visible": {
+    "browser": "ios_saf",
+    "version": "15.4",
+    "releaseDate": "2022-03-14"
+  },
+  "css-focus-within": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-font-palette": {
+    "browser": "firefox",
+    "version": "107",
+    "releaseDate": "2022-11-15"
+  },
+  "css-font-rendering-controls": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-font-stretch": {
+    "browser": "safari",
+    "version": "11",
+    "releaseDate": "2017-09-19"
+  },
+  "css-gradients": {
+    "browser": "ios_saf",
+    "version": "15.4",
+    "releaseDate": "2022-03-14"
+  },
+  "css-grid": {
+    "browser": "edge",
+    "version": "16",
+    "releaseDate": "2017-10-17"
+  },
+  "css-image-orientation": {
+    "browser": "edge",
+    "version": "89",
+    "releaseDate": "2021-03-04"
+  },
+  "css-in-out-of-range": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-indeterminate-pseudo": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-lch-lab": {
+    "browser": "firefox",
+    "version": "113",
+    "releaseDate": "2023-05-09"
+  },
+  "css-logical-props": {
+    "browser": "ios_saf",
+    "version": "15.0-15.1",
+    "releaseDate": "2021-09-20"
+  },
+  "css-matches-pseudo": {
+    "browser": "edge",
+    "version": "88",
+    "releaseDate": "2021-01-23"
+  },
+  "css-math-functions": {
+    "browser": "firefox",
+    "version": "75",
+    "releaseDate": "2020-04-08"
+  },
+  "css-media-interaction": {
+    "browser": "firefox",
+    "version": "64",
+    "releaseDate": "2018-12-11"
+  },
+  "css-media-range-syntax": {
+    "browser": "ios_saf",
+    "version": "16.4",
+    "releaseDate": "2023-03-27"
+  },
+  "css-media-resolution": {
+    "browser": "ios_saf",
+    "version": "16.0",
+    "releaseDate": "2022-09-12"
+  },
+  "css-motion-paths": {
+    "browser": "ios_saf",
+    "version": "16.0",
+    "releaseDate": "2022-09-12"
+  },
+  "css-not-sel-list": {
+    "browser": "edge",
+    "version": "88",
+    "releaseDate": "2021-01-23"
+  },
+  "css-nth-child-of": {
+    "browser": "firefox",
+    "version": "113",
+    "releaseDate": "2023-05-09"
+  },
+  "css-overflow": {
+    "browser": "ios_saf",
+    "version": "16.0",
+    "releaseDate": "2022-09-12"
+  },
+  "css-overscroll-behavior": {
+    "browser": "ios_saf",
+    "version": "16.0",
+    "releaseDate": "2022-09-12"
+  },
+  "css-placeholder": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-placeholder-shown": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-read-only-write": {
+    "browser": "firefox",
+    "version": "78",
+    "releaseDate": "2020-06-30"
+  },
+  "css-revert-value": {
+    "browser": "edge",
+    "version": "84",
+    "releaseDate": "2020-07-16"
+  },
+  "css-rrggbbaa": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-shapes": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-snappoints": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-sticky": {
+    "browser": "edge",
+    "version": "91",
+    "releaseDate": "2021-05-27"
+  },
+  "css-supports-api": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-text-align-last": {
+    "browser": "ios_saf",
+    "version": "16.0",
+    "releaseDate": "2022-09-12"
+  },
+  "css-text-orientation": {
+    "browser": "safari",
+    "version": "14",
+    "releaseDate": "2020-09-16"
+  },
+  "css-textshadow": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "css-unset-value": {
+    "browser": "ios_saf",
+    "version": "9.3",
+    "releaseDate": "2016-03-21"
+  },
+  "css-variables": {
+    "browser": "edge",
+    "version": "16",
+    "releaseDate": "2017-10-17"
+  },
+  "css-writing-mode": {
+    "browser": "ios_saf",
+    "version": "11.0-11.2",
+    "releaseDate": "2017-09-19"
+  },
+  "css3-tabsize": {
+    "browser": "firefox",
+    "version": "91",
+    "releaseDate": "2021-08-10"
+  },
+  "datauri": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "date-tolocaledatestring": {
+    "browser": "edge",
+    "version": "18",
+    "releaseDate": "2018-11-13"
+  },
+  "details": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "dialog": {
+    "browser": "ios_saf",
+    "version": "15.4",
+    "releaseDate": "2022-03-14"
+  },
+  "document-scrollingelement": {
+    "browser": "firefox",
+    "version": "48",
+    "releaseDate": "2016-08-02"
+  },
+  "dom-manip-convenience": {
+    "browser": "edge",
+    "version": "17",
+    "releaseDate": "2018-04-30"
+  },
+  "download": {
+    "browser": "ios_saf",
+    "version": "13.0-13.1",
+    "releaseDate": "2019-09-19"
+  },
+  "element-closest": {
+    "browser": "edge",
+    "version": "15",
+    "releaseDate": "2017-04-11"
+  },
+  "element-scroll-methods": {
+    "browser": "ios_saf",
+    "version": "14.5-14.8",
+    "releaseDate": "2021-04-26"
+  },
+  "eme": {
+    "browser": "safari",
+    "version": "12",
+    "releaseDate": "2018-09-17"
+  },
+  "es6-class": {
+    "browser": "firefox",
+    "version": "45",
+    "releaseDate": "2016-03-08"
+  },
+  "es6-generators": {
+    "browser": "safari",
+    "version": "10",
+    "releaseDate": "2016-09-20"
+  },
+  "es6-module": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "es6-module-dynamic-import": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "es6-number": {
+    "browser": "safari",
+    "version": "9",
+    "releaseDate": "2015-10-01"
+  },
+  "es6-string-includes": {
+    "browser": "safari",
+    "version": "9",
+    "releaseDate": "2015-10-01"
+  },
+  "eventsource": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "fetch": {
+    "browser": "ios_saf",
+    "version": "10.3",
+    "releaseDate": "2017-03-27"
+  },
+  "fileapi": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "flac": {
+    "browser": "safari",
+    "version": "13",
+    "releaseDate": "2019-09-19"
+  },
+  "flexbox": {
+    "browser": "safari",
+    "version": "9",
+    "releaseDate": "2015-10-01"
+  },
+  "flexbox-gap": {
+    "browser": "ios_saf",
+    "version": "14.5-14.8",
+    "releaseDate": "2021-04-26"
+  },
+  "flow-root": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "focusin-focusout-events": {
+    "browser": "firefox",
+    "version": "52",
+    "releaseDate": "2017-03-07"
+  },
+  "font-family-system-ui": {
+    "browser": "firefox",
+    "version": "92",
+    "releaseDate": "2021-09-07"
+  },
+  "font-feature": {
+    "browser": "ios_saf",
+    "version": "9.3",
+    "releaseDate": "2016-03-21"
+  },
+  "font-kerning": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "font-loading": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "font-unicode-range": {
+    "browser": "edge",
+    "version": "17",
+    "releaseDate": "2018-04-30"
+  },
+  "font-variant-alternates": {
+    "browser": "edge",
+    "version": "111",
+    "releaseDate": "2023-03-13"
+  },
+  "font-variant-numeric": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "form-attribute": {
+    "browser": "edge",
+    "version": "16",
+    "releaseDate": "2017-10-17"
+  },
+  "form-validation": {
+    "browser": "ios_saf",
+    "version": "10.3",
+    "releaseDate": "2017-03-27"
+  },
+  "gamepad": {
+    "browser": "ios_saf",
+    "version": "10.3",
+    "releaseDate": "2017-03-27"
+  },
+  "getboundingclientrect": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "iframe-srcdoc": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "import-maps": {
+    "browser": "ios_saf",
+    "version": "16.4",
+    "releaseDate": "2023-03-27"
+  },
+  "indeterminate-checkbox": {
+    "browser": "ios_saf",
+    "version": "12.2-12.5",
+    "releaseDate": "2019-03-25"
+  },
+  "indexeddb": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "indexeddb2": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "innertext": {
+    "browser": "firefox",
+    "version": "45",
+    "releaseDate": "2016-03-08"
+  },
+  "input-event": {
+    "browser": "safari",
+    "version": "13.1",
+    "releaseDate": "2020-03-24"
+  },
+  "input-minlength": {
+    "browser": "edge",
+    "version": "17",
+    "releaseDate": "2018-04-30"
+  },
+  "input-pattern": {
+    "browser": "ios_saf",
+    "version": "10.3",
+    "releaseDate": "2017-03-27"
+  },
+  "insert-adjacent": {
+    "browser": "firefox",
+    "version": "48",
+    "releaseDate": "2016-08-02"
+  },
+  "internationalization": {
+    "browser": "safari",
+    "version": "10",
+    "releaseDate": "2016-09-20"
+  },
+  "intl-pluralrules": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "js-regexp-lookbehind": {
+    "browser": "ios_saf",
+    "version": "16.4",
+    "releaseDate": "2023-03-27"
+  },
+  "justify-content-space-evenly": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "kerning-pairs-ligatures": {
+    "browser": "edge",
+    "version": "18",
+    "releaseDate": "2018-11-13"
+  },
+  "keyboardevent-getmodifierstate": {
+    "browser": "ios_saf",
+    "version": "10.3",
+    "releaseDate": "2017-03-27"
+  },
+  "keyboardevent-key": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "let": {
+    "browser": "ios_saf",
+    "version": "11.0-11.2",
+    "releaseDate": "2017-09-19"
+  },
+  "link-icon-png": {
+    "browser": "ios_saf",
+    "version": "12.0-12.1",
+    "releaseDate": "2018-09-17"
+  },
+  "link-rel-preload": {
+    "browser": "firefox",
+    "version": "85",
+    "releaseDate": "2021-01-26"
+  },
+  "localecompare": {
+    "browser": "safari",
+    "version": "10",
+    "releaseDate": "2016-09-20"
+  },
+  "matchesselector": {
+    "browser": "edge",
+    "version": "15",
+    "releaseDate": "2017-04-11"
+  },
+  "mediarecorder": {
+    "browser": "ios_saf",
+    "version": "14.5-14.8",
+    "releaseDate": "2021-04-26"
+  },
+  "meter": {
+    "browser": "ios_saf",
+    "version": "10.3",
+    "releaseDate": "2017-03-27"
+  },
+  "object-entries": {
+    "browser": "ios_saf",
+    "version": "10.3",
+    "releaseDate": "2017-03-27"
+  },
+  "object-fit": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "object-values": {
+    "browser": "ios_saf",
+    "version": "10.3",
+    "releaseDate": "2017-03-27"
+  },
+  "offscreencanvas": {
+    "browser": "ios_saf",
+    "version": "16.4",
+    "releaseDate": "2023-03-27"
+  },
+  "ol-reversed": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "once-event-listener": {
+    "browser": "edge",
+    "version": "16",
+    "releaseDate": "2017-10-17"
+  },
+  "outline": {
+    "browser": "edge",
+    "version": "15",
+    "releaseDate": "2017-04-11"
+  },
+  "pad-start-end": {
+    "browser": "edge",
+    "version": "15",
+    "releaseDate": "2017-04-11"
+  },
+  "passive-event-listener": {
+    "browser": "edge",
+    "version": "16",
+    "releaseDate": "2017-10-17"
+  },
+  "path2d": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "permissions-api": {
+    "browser": "ios_saf",
+    "version": "16.0",
+    "releaseDate": "2022-09-12"
+  },
+  "picture": {
+    "browser": "ios_saf",
+    "version": "9.3",
+    "releaseDate": "2016-03-21"
+  },
+  "pointer": {
+    "browser": "ios_saf",
+    "version": "13.2",
+    "releaseDate": "2019-10-28"
+  },
+  "prefers-color-scheme": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "prefers-reduced-motion": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "promise-finally": {
+    "browser": "edge",
+    "version": "18",
+    "releaseDate": "2018-11-13"
+  },
+  "proxy": {
+    "browser": "safari",
+    "version": "10",
+    "releaseDate": "2016-09-20"
+  },
+  "rel-noopener": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "rel-noreferrer": {
+    "browser": "edge",
+    "version": "13",
+    "releaseDate": "2015-11-12"
+  },
+  "rellist": {
+    "browser": "edge",
+    "version": "18",
+    "releaseDate": "2018-11-13"
+  },
+  "resizeobserver": {
+    "browser": "ios_saf",
+    "version": "13.4-13.7",
+    "releaseDate": "2020-03-24"
+  },
+  "resource-timing": {
+    "browser": "safari",
+    "version": "11.1",
+    "releaseDate": "2018-03-29"
+  },
+  "rest-parameters": {
+    "browser": "safari",
+    "version": "10",
+    "releaseDate": "2016-09-20"
+  },
+  "rtcpeerconnection": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "screen-orientation": {
+    "browser": "ios_saf",
+    "version": "16.4",
+    "releaseDate": "2023-03-27"
+  },
+  "scrollintoview": {
+    "browser": "ios_saf",
+    "version": "16.0",
+    "releaseDate": "2022-09-12"
+  },
+  "serviceworkers": {
+    "browser": "edge",
+    "version": "17",
+    "releaseDate": "2018-04-30"
+  },
+  "shadowdomv1": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "srcset": {
+    "browser": "edge",
+    "version": "16",
+    "releaseDate": "2017-10-17"
+  },
+  "subresource-integrity": {
+    "browser": "edge",
+    "version": "17",
+    "releaseDate": "2018-04-30"
+  },
+  "svg": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "svg-css": {
+    "browser": "edge",
+    "version": "16",
+    "releaseDate": "2017-10-17"
+  },
+  "svg-fragment": {
+    "browser": "ios_saf",
+    "version": "11.3-11.4",
+    "releaseDate": "2018-03-29"
+  },
+  "svg-html5": {
+    "browser": "edge",
+    "version": "17",
+    "releaseDate": "2018-04-30"
+  },
+  "svg-img": {
+    "browser": "safari",
+    "version": "9",
+    "releaseDate": "2015-10-01"
+  },
+  "svg-smil": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "template": {
+    "browser": "edge",
+    "version": "15",
+    "releaseDate": "2017-04-11"
+  },
+  "template-literals": {
+    "browser": "safari",
+    "version": "9.1",
+    "releaseDate": "2016-03-21"
+  },
+  "text-emphasis": {
+    "browser": "edge",
+    "version": "99",
+    "releaseDate": "2022-03-03"
+  },
+  "textencoder": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "tls1-3": {
+    "browser": "safari",
+    "version": "14",
+    "releaseDate": "2020-09-16"
+  },
+  "transforms2d": {
+    "browser": "edge",
+    "version": "17",
+    "releaseDate": "2018-04-30"
+  },
+  "transforms3d": {
+    "browser": "ios_saf",
+    "version": "15.4",
+    "releaseDate": "2022-03-14"
+  },
+  "unhandledrejection": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "upgradeinsecurerequests": {
+    "browser": "edge",
+    "version": "17",
+    "releaseDate": "2018-04-30"
+  },
+  "urlsearchparams": {
+    "browser": "edge",
+    "version": "17",
+    "releaseDate": "2018-04-30"
+  },
+  "user-timing": {
+    "browser": "ios_saf",
+    "version": "11.0-11.2",
+    "releaseDate": "2017-09-19"
+  },
+  "vector-effect": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "viewport-unit-variants": {
+    "browser": "edge",
+    "version": "108",
+    "releaseDate": "2022-12-05"
+  },
+  "viewport-units": {
+    "browser": "edge",
+    "version": "16",
+    "releaseDate": "2017-10-17"
+  },
+  "wasm": {
+    "browser": "edge",
+    "version": "16",
+    "releaseDate": "2017-10-17"
+  },
+  "webgl": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "webgl2": {
+    "browser": "ios_saf",
+    "version": "15.0-15.1",
+    "releaseDate": "2021-09-20"
+  },
+  "webp": {
+    "browser": "safari",
+    "version": "16.0",
+    "releaseDate": "2022-09-12"
+  },
+  "will-change": {
+    "browser": "edge",
+    "version": "79",
+    "releaseDate": "2020-01-15"
+  },
+  "woff2": {
+    "browser": "safari",
+    "version": "12",
+    "releaseDate": "2018-09-17"
+  },
+  "word-break": {
+    "browser": "safari",
+    "version": "9",
+    "releaseDate": "2015-10-01"
+  },
+  "wordwrap": {
+    "browser": "edge",
+    "version": "18",
+    "releaseDate": "2018-11-13"
+  }
 }

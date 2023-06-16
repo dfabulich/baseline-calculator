@@ -2,9 +2,10 @@
 import {readFileSync} from 'node:fs';
 import {parseArgs} from 'node:util';
 
-let { values: {cohort} } = parseArgs({
+let { values: {cohort, browser} } = parseArgs({
     options: {
-        cohort: { type: 'string' }
+        cohort: { type: 'string' },
+        browser: { type: 'string' },
     }
 })
 
@@ -72,12 +73,18 @@ function caniuseLink(featureId) {
 }
 
 const keystoneFeatures = Object.keys(keystoneReleaseDates).filter(feature => {
-    if (!cohort) return true;
-    return keystoneReleaseDates[feature].startsWith(cohort);
+    if (!cohort && !browser) return true;
+    if (cohort && !keystoneReleaseDates[feature].releaseDate.startsWith(cohort)) {
+        return false;
+    } else if (browser && keystoneReleaseDates[feature].browser !== browser) {
+        return false;
+    } else {
+        return true;
+    }
 })
 
-if (cohort) {
-    console.log(`Cohort ${cohort}: ${keystoneFeatures.length} feature(s): ${keystoneFeatures}\n`);
+if (cohort || browser) {
+    console.log(`Cohort ${[cohort, browser].filter(x => !!x).join(' ')}: ${keystoneFeatures.length} feature(s): ${keystoneFeatures}\n`);
 }
 
 const results = Object.fromEntries(targetMarketShares.map(targetMarketShare => {
@@ -86,13 +93,14 @@ const results = Object.fromEntries(targetMarketShares.map(targetMarketShare => {
     ).map(feature => {
         const history = historicalFeatureData[feature];
         const { timestamp } = history.find(({ usage_perc_y }) => Number(usage_perc_y) >= targetMarketShare);
-        const keystoneReleaseTimestamp = new Date(keystoneReleaseDates[feature]).getTime() / 1000;
+        const keystoneReleaseTimestamp = new Date(keystoneReleaseDates[feature].releaseDate).getTime() / 1000;
         let daysToTarget = Math.ceil((timestamp - keystoneReleaseTimestamp) / ONE_DAY_IN_SECONDS);
         if (daysToTarget < 0) daysToTarget = 0;
         return {feature, daysToTarget};
     }).sort((a, b) => a.daysToTarget - b.daysToTarget);
     debugger;
     const result = [targetMarketShare, targetConversions.map(targetConversion => {
+        if (!keystoneFeatures.length) return "n/a";
         if ((daysToTarget.length / keystoneFeatures.length) < (targetConversion/100)) return "never";
         const index = Math.ceil(keystoneFeatures.length * (targetConversion/100)) - 1;
         return Math.round(daysToTarget[index].daysToTarget / 30) + " months";

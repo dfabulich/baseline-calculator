@@ -18,6 +18,14 @@ for (const browser of majorBrowsers) {
     browserVersions[browser] = Object.fromEntries(agents[browser].version_list.map(v => [v.version, v]));
 }
 
+const initialBrowserVersions = {}
+for (const browser of majorBrowsers) {
+    const versions = Object.values(browserVersions[browser])
+        .filter(v => v.release_date)
+        .sort((a,b) => a.release_date - b.release_date);
+    initialBrowserVersions[browser] = versions[0].version;
+}
+
 //console.log({latestVersions});
 
 function featureSupportedByAllMajorBrowsers(featureData) {
@@ -54,8 +62,12 @@ for (const id in features) {
             return {browser, version, releaseDate};
         });
     const {browser, version, releaseDate} = browserReleaseDates.sort((a,b) => a.releaseDate.localeCompare(b.releaseDate)).at(-1);
-    console.log(id, browser, version, releaseDate);
-    keystoneReleaseDates[id] = releaseDate;
+    if (version === initialBrowserVersions[browser]) {
+        console.log('SKIPPING', id, browser, version, releaseDate);
+    } else {
+        console.log(id, browser, version, releaseDate);
+        keystoneReleaseDates[id] = { browser, version, releaseDate };
+    }
 }
 
 writeFileSync('keystone-release-dates.json', JSON.stringify(keystoneReleaseDates, null, 2), 'utf8');

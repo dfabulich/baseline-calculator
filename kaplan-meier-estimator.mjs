@@ -2,9 +2,10 @@
 import {readFileSync} from 'node:fs';
 import {parseArgs} from 'node:util';
 
-let { values: {cohort} } = parseArgs({
+let { values: {cohort, browser} } = parseArgs({
     options: {
-        cohort: { type: 'string' }
+        cohort: { type: 'string' },
+        browser: { type: 'string' },
     }
 })
 
@@ -69,12 +70,18 @@ function computeKaplanMeierSurvivalFunction(survivalData) {
 }
 
 const keystoneFeatures = Object.keys(keystoneReleaseDates).filter(feature => {
-    if (!cohort) return true;
-    return keystoneReleaseDates[feature].startsWith(cohort);
+    if (!cohort && !browser) return true;
+    if (cohort && !keystoneReleaseDates[feature].releaseDate.startsWith(cohort)) {
+        return false;
+    } else if (browser && keystoneReleaseDates[feature].browser !== browser) {
+        return false;
+    } else {
+        return true;
+    }
 })
 
-if (cohort) {
-    console.log(`Cohort ${cohort}: ${keystoneFeatures.length} feature(s)\n`);
+if (cohort || browser) {
+    console.log(`Cohort ${[cohort, browser].filter(x => !!x).join(' ')}: ${keystoneFeatures.length} feature(s): ${keystoneFeatures}\n`);
 }
 
 const now = Date.now() / 1000;
@@ -88,7 +95,7 @@ const results = Object.fromEntries(targetMarketShares.map(targetMarketShare => {
             timestamp = now;
             censored = true;
         }
-        const keystoneReleaseTimestamp = new Date(keystoneReleaseDates[feature]).getTime() / 1000;
+        const keystoneReleaseTimestamp = new Date(keystoneReleaseDates[feature].releaseDate).getTime() / 1000;
         let days = Math.ceil((timestamp - keystoneReleaseTimestamp) / ONE_DAY_IN_SECONDS);
         if (days < 0) days = 1;
         return {feature, days, censored};
