@@ -77,7 +77,7 @@ const keystoneFeatures = Object.keys(keystoneReleaseDates).filter(feature => {
 })
 
 if (cohort) {
-    console.log(`Cohort ${cohort}: ${keystoneFeatures.length} feature(s)\n`);
+    console.log(`Cohort ${cohort}: ${keystoneFeatures.length} feature(s): ${keystoneFeatures}\n`);
 }
 
 const results = Object.fromEntries(targetMarketShares.map(targetMarketShare => {
