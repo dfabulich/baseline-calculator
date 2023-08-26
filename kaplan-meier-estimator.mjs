@@ -8,17 +8,9 @@ let { values: {cohort} } = parseArgs({
     }
 })
 
-const keystoneReleaseDates = JSON.parse(readFileSync('keystone-release-dates.json', 'utf8'));
-const historicalFeatureData = JSON.parse(readFileSync('historical-feature-data.json', 'utf8'));
+const targetDates = JSON.parse(readFileSync('target-dates.json', 'utf8'));
 
-const targetMarketShares = [
-    80,
-    90,
-    95,
-    97,
-    98,
-    99,
-];
+const targetMarketShares = Object.keys(Object.values(targetDates)[0].reached);
 
 const targetConversions = [
     50,
@@ -30,8 +22,6 @@ const targetConversions = [
     98,
     99
 ]
-
-const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
 
 /**
  * https://statsandr.com/blog/what-is-survival-analysis/
@@ -68,30 +58,37 @@ function computeKaplanMeierSurvivalFunction(survivalData) {
     return survivalFunction;
 }
 
-const keystoneFeatures = Object.keys(keystoneReleaseDates).filter(feature => {
+const keystoneFeatures = Object.keys(targetDates).filter(feature => {
     if (!cohort) return true;
-    return keystoneReleaseDates[feature].startsWith(cohort);
+    return targetDates[feature].keystone.startsWith(cohort);
 })
 
 if (cohort) {
     console.log(`Cohort ${cohort}: ${keystoneFeatures.length} feature(s)\n`);
 }
 
-const now = Date.now() / 1000;
+const today = new Date().toISOString().replace(/T.*/, '');
+
+const ONE_DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;
+
+function daysDiff(start, end) {
+    const diff = (new Date(end).getTime() - new Date(start).getTime()) / ONE_DAY_IN_MILLISECONDS;
+    if (diff < 0) return 0;
+    return diff;
+}
 
 const results = Object.fromEntries(targetMarketShares.map(targetMarketShare => {
-    const survivalData = keystoneFeatures.map(feature => {
-        let censored = false;
-        const history = historicalFeatureData[feature];
-        let { timestamp } = history.find(({ usage_perc_y }) => (Number(usage_perc_y) >= targetMarketShare)) ?? { timestamp : null};
-        if (!timestamp) {
-            timestamp = now;
-            censored = true;
+    const survivalData = Object.entries(targetDates).filter(([,{keystone}]) => {
+        if (!cohort) return true;
+        return keystone.startsWith(cohort);
+    }).map(([feature, {keystone, marketshare, reached}]) => {
+        if (marketshare > targetMarketShare) {
+            const days = daysDiff(keystone, reached[targetMarketShare]);
+            return {feature, days, censored: false};
+        } else {
+            const days = daysDiff(keystone, today);
+            return {feature, days, censored: true};
         }
-        const keystoneReleaseTimestamp = new Date(keystoneReleaseDates[feature]).getTime() / 1000;
-        let days = Math.ceil((timestamp - keystoneReleaseTimestamp) / ONE_DAY_IN_SECONDS);
-        if (days < 0) days = 1;
-        return {feature, days, censored};
     }).sort((a,b) => a.days - b.days);
     
     const survivalFunction = computeKaplanMeierSurvivalFunction(survivalData);

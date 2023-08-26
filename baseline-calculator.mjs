@@ -8,18 +8,9 @@ let { values: {cohort} } = parseArgs({
     }
 })
 
-const {data: features} = JSON.parse(readFileSync('caniuse/data.json', 'utf8'));
-const keystoneReleaseDates = JSON.parse(readFileSync('keystone-release-dates.json', 'utf8'));
-const historicalFeatureData = JSON.parse(readFileSync('historical-feature-data.json', 'utf8'));
+const targetDates = JSON.parse(readFileSync('target-dates.json'));
 
-const targetMarketShares = [
-    80,
-    90,
-    95,
-    97,
-    98,
-    99,
-];
+const targetMarketShares = Object.keys(Object.values(targetDates)[0].reached);
 
 const targetConversions = [
     50,
@@ -32,66 +23,35 @@ const targetConversions = [
     99
 ]
 
-const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
+const ONE_DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;
 
-function median(values) {
-    // https://stackoverflow.com/a/45309555/54829
-    if (values.length === 0) throw new Error("No inputs");
-
-    values.sort(function (a, b) {
-        return a - b;
-    });
-
-    var half = Math.floor(values.length / 2);
-
-    if (values.length % 2)
-        return values[half];
-
-    return (values[half - 1] + values[half]) / 2.0;
-}
-
-function average(values) {
-    return values.reduce((prev, current) => prev + current, 0) / values.length;
-}
-
-// https://stackoverflow.com/a/53577159/54829
-function stdev(array) {
-    const n = array.length;
-    const mean = average(array);
-    return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n);
-}
-
-function quantile(values, q) {
-    const sorted = [...values].sort((a,b) => a-b);
-    const index = Math.floor(sorted.length * q);
-    return sorted[index];
-}
-
-function caniuseLink(featureId) {
-    return `[${featureId}](https://caniuse.com/${featureId})`
-}
-
-const keystoneFeatures = Object.keys(keystoneReleaseDates).filter(feature => {
+const keystoneFeatures = Object.keys(targetDates).filter(feature => {
     if (!cohort) return true;
-    return keystoneReleaseDates[feature].startsWith(cohort);
+    return targetDates[feature].keystone.startsWith(cohort);
 })
 
 if (cohort) {
     console.log(`Cohort ${cohort}: ${keystoneFeatures.length} feature(s): ${keystoneFeatures}\n`);
 }
 
+function daysDiff(start, end) {
+    if (!end) return 'n/a';
+    const diff = Math.ceil(
+        (new Date(end).getTime() - new Date(start).getTime()) / ONE_DAY_IN_MILLISECONDS
+    );
+    if (diff < 0) return 0;
+    return diff;
+}
+
 const results = Object.fromEntries(targetMarketShares.map(targetMarketShare => {
-    const daysToTarget = keystoneFeatures.filter(feature =>
-        Number(features[feature].usage_perc_y) >= targetMarketShare
-    ).map(feature => {
-        const history = historicalFeatureData[feature];
-        const { timestamp } = history.find(({ usage_perc_y }) => Number(usage_perc_y) >= targetMarketShare);
-        const keystoneReleaseTimestamp = new Date(keystoneReleaseDates[feature]).getTime() / 1000;
-        let daysToTarget = Math.ceil((timestamp - keystoneReleaseTimestamp) / ONE_DAY_IN_SECONDS);
-        if (daysToTarget < 0) daysToTarget = 0;
+    const daysToTarget = keystoneFeatures.filter(feature => {
+        if (!targetDates[feature]) throw new Error(`couldn't find ${feature} in targetDates`);
+        return targetDates[feature].marketshare > targetMarketShare
+    }).map(feature => {
+        const targetDate = targetDates[feature].reached[targetMarketShare];
+        const daysToTarget = daysDiff(targetDates[feature].keystone, targetDate);
         return {feature, daysToTarget};
     }).sort((a, b) => a.daysToTarget - b.daysToTarget);
-    debugger;
     const result = [targetMarketShare, targetConversions.map(targetConversion => {
         if ((daysToTarget.length / keystoneFeatures.length) < (targetConversion/100)) return "never";
         const index = Math.ceil(keystoneFeatures.length * (targetConversion/100)) - 1;

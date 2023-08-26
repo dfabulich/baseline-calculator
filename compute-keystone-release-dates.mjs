@@ -31,8 +31,6 @@ function featureSupportedByAllMajorBrowsers(featureData) {
     return true;
 }
 
-debugger;
-
 const keystoneReleaseDates = {};
 
 for (const id in features) {
