@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 import {readFileSync, writeFileSync} from 'node:fs';
-import {parseArgs} from 'node:util';
+import {computeDarkMatter} from './compute-dark-matter.mjs';
 
-const {data: features} = JSON.parse(readFileSync('caniuse/data.json', 'utf8'));
+const {data: features, agents} = JSON.parse(readFileSync('caniuse/data.json', 'utf8'));
 const keystoneReleaseDates = JSON.parse(readFileSync('keystone-release-dates.json', 'utf8'));
 const historicalFeatureData = JSON.parse(readFileSync('historical-feature-data.json', 'utf8'));
+
+const darkMatter = computeDarkMatter(agents);
 
 const targetMarketShares = [
     80,
@@ -17,6 +19,8 @@ const targetMarketShares = [
     95,
     96,
     97,
+    98,
+    99
 ];
 
 const keystoneFeatures = Object.keys(keystoneReleaseDates);
@@ -27,7 +31,7 @@ function dateString(timestamp) {
 
 const results = Object.fromEntries(keystoneFeatures.map(feature => [feature, {
     keystone: keystoneReleaseDates[feature],
-    marketshare: Number(features[feature].usage_perc_y),
+    marketshare: Number(features[feature].usage_perc_y) / darkMatter,
     reached: {},
 }]));
 
@@ -37,7 +41,7 @@ for (const targetMarketShare of targetMarketShares) {
             results[feature].reached[targetMarketShare] = null;
         } else {
             const history = historicalFeatureData[feature];
-            const { timestamp } = history.find(({ usage_perc_y }) => Number(usage_perc_y) >= targetMarketShare);
+            const { timestamp } = history.find(({ trackedMarketShare }) => trackedMarketShare >= targetMarketShare);
             results[feature].reached[targetMarketShare] = dateString(timestamp);
         }
     }
@@ -59,7 +63,7 @@ function daysDiff(start, end) {
 const csv = `feature,marketshare,keystone,days since keystone,${targetMarketShares.map(target => `reached ${target}%,days to ${target}%`).join(',')
     }
 ${Object.entries(results).map(([feature, { keystone, reached }]) => {
-        const marketshare = features[feature].usage_perc_y;
+        const marketshare = Math.round(features[feature].usage_perc_y / darkMatter * 100) / 100;
         const row = `${feature},${marketshare},${keystone},${daysDiff(keystone, today)},${Object.values(reached).map(reached => 
         `${reached ?? 'not yet'},${daysDiff(keystone, reached)}`
     ).join(',')}`;

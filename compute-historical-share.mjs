@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import {readFileSync, writeFileSync} from 'node:fs';
 import {execSync} from 'node:child_process';
+import {computeDarkMatter} from './compute-dark-matter.mjs';
 
 const historicalFeatureData = {};
 
@@ -14,11 +15,13 @@ for (const revision in revisions) {
     console.log({revision, dateString});
     execSync(`git checkout ${revision} -- data.json`, {cwd: 'caniuse'});
     try {
-        const { data: features } = JSON.parse(readFileSync('caniuse/data.json', 'utf8'));
+        const { data: features, agents } = JSON.parse(readFileSync('caniuse/data.json', 'utf8'));
+        const darkMatter = computeDarkMatter(agents);
         for (const feature in features) {
             const { usage_perc_y } = features[feature];
+            const trackedMarketShare = usage_perc_y / darkMatter;
             if (!historicalFeatureData[feature]) historicalFeatureData[feature] = [];
-            historicalFeatureData[feature].push({ timestamp, usage_perc_y });
+            historicalFeatureData[feature].push({ timestamp, usage_perc_y, darkMatter, trackedMarketShare });
         }
     } catch (e) {
         console.log('skipping unparseable data', revision);
