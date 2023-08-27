@@ -31,7 +31,7 @@ const keystoneFeatures = Object.keys(targetDates).filter(feature => {
 })
 
 if (cohort) {
-    console.log(`Cohort ${cohort}: ${keystoneFeatures.length} feature(s): ${keystoneFeatures}\n`);
+    console.log(`Cohort ${cohort}: ${keystoneFeatures.length} feature(s): ${keystoneFeatures.join(', ')}\n`);
 }
 
 function daysDiff(start, end) {
