@@ -54,7 +54,7 @@ const ONE_DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;
 const today = dateString(Date.now() / 1000);
 
 function daysDiff(start, end) {
-    if (!end) return 'n/a';
+    if (!end) return 'not yet';
     const diff = (new Date(end).getTime() - new Date(start).getTime()) / ONE_DAY_IN_MILLISECONDS;
     if (diff < 0) return 0;
     return diff;
