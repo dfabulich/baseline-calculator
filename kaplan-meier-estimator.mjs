@@ -97,7 +97,7 @@ const results = Object.fromEntries(targetMarketShares.map(targetMarketShare => {
         const [daysToTarget] = Object.entries(survivalFunction).find(([days, survivalRate]) => 
             survivalRate < (1 - targetConversion/100)
         ) ?? [null];
-        const result = daysToTarget ? Math.round(daysToTarget/ 30) + " months" : "never";
+        const result = daysToTarget ? Math.round(daysToTarget/ 30) + " months" : "unknown";
         return result;
     })]
 

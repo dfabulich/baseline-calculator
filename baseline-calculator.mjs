@@ -20,7 +20,8 @@ const targetConversions = [
     95,
     97,
     98,
-    99
+    99,
+    100,
 ]
 
 const ONE_DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;
@@ -31,7 +32,8 @@ const keystoneFeatures = Object.keys(targetDates).filter(feature => {
 })
 
 if (cohort) {
-    console.log(`Cohort ${cohort}: ${keystoneFeatures.length} feature(s): ${keystoneFeatures.join(', ')}\n`);
+    const featuresPlural = keystoneFeatures.length === 1 ? 'feature' : 'features';
+    console.log(`# Cohort ${cohort}: ${keystoneFeatures.length} ${featuresPlural}\nFeatures: ${keystoneFeatures.join(', ')}\n`);
 }
 
 function daysDiff(start, end) {
@@ -53,7 +55,7 @@ const results = Object.fromEntries(targetMarketShares.map(targetMarketShare => {
         return {feature, daysToTarget};
     }).sort((a, b) => a.daysToTarget - b.daysToTarget);
     const result = [targetMarketShare, targetConversions.map(targetConversion => {
-        if ((daysToTarget.length / keystoneFeatures.length) < (targetConversion/100)) return "never";
+        if ((daysToTarget.length / keystoneFeatures.length) < (targetConversion/100)) return "not yet";
         const index = Math.ceil(keystoneFeatures.length * (targetConversion/100)) - 1;
         return Math.round(daysToTarget[index].daysToTarget / 30) + " months";
     })]

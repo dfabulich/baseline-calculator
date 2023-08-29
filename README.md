@@ -2,7 +2,7 @@
 
 How long does it take for web features to achieve widespread availability?
 
-**tl;dr: 65 features became eligible for Baseline in 2020. 80% of those features achieved 95% market share in 30 months.**
+**tl;dr: 63 features became eligible for Baseline in 2020. 95% of those features achieved 95% market share in 31 months.**
 
 # Background: How should "Baseline" be defined?
 
@@ -86,24 +86,120 @@ But we do have a partial mitigation: although the current `HEAD` revision of can
 
 I don't think that this will fundamentally alter the final results, but, if we're concerned about it, we could try to investigate another data source, e.g. Akamai's RUM Archive. https://github.com/rum-archive/rum-archive
 
+### And another catch: Caniuse lists a huge amount of unknown-browser "Other" traffic ("dark matter"), so we'll just factor that out
+
+When you sum the marketshare of all of the browsers in caniuse's data set, it doesn't add up to 100%. It's not even _supposed_ to add up to 100%, because StatCounter doesn't track all browsers; it lumps unknown browsers into a mysterious "Other" category.
+
+As of Aug 2023, all of caniuse's browsers add up to 97.78%, leaving 2.22% share unknown. Caniuse's approach is to be pessimistic about the unknown share, assuming that no features work in the unknown browsers.
+
+So, for example, <https://caniuse.com/inline-block>, which was available in all browsers in 2009, and works in all browsers and browser versions that caniuse tracks, is currently only at 97.78% global marketshare according to caniuse, because of that 2.22% unknown "dark matter" traffic. It is simply impossible for `inline-block` to reach 98% share on caniuse.
+
+Here, we're going to compensate for dark matter, by computing the total share of all tracked browsers (97.78%), and dividing all of caniuse's marketshare numbers by that amount, the "dark matter factor". For example, `inline-block` has 100% share in our analysis. To pick another example, we'll say that <https://caniuse.com/es6-module>, which caniuse says has 94.92% share, actually has 94.92% / 0.9778 = 97.07% share.
+
+We'll call this number the "tracked marketshare" for the feature, in contrast with caniuse's number.
+
+And we calculate this "dark matter factor" at each point in history. For example, in Jan 2019, the dark matter factor was 95.90%, so, when we're assessing the tracked marketshare of a feature in Jan 2019, we'll divide its caniuse Jan 2019 marketshare by 95.90%.
+
+## Target Dates
+
+Using `keystone-release-dates.json` and `historical-feature-data.json`, we can compute the dates at which each feature reached certain marketshare targets. We do this with a `compute-target-dates.mjs` script.
+
+We start by considering only the web features that are supported by all major browsers. I'm calling those features "Baselineable" features. Baselineable features _could_ become part of Baseline, but only if/when they achieve "enough" market share. (As of Aug 2023, there are 177 Baselineable features, supported in the current latest versions of all major browsers.)
+
+We compute the following dates for each Baselineable feature:
+
+* Date the feature reached 80% marketshare
+* … 85% marketshare
+* … 90% marketshare
+* … 91% marketshare
+* … 92% marketshare
+* … 93% marketshare
+* … 94% marketshare
+* … 95% marketshare
+* … 96% marketshare
+* … 97% marketshare
+* … 98% marketshare
+* … 99% marketshare
+
+If the feature has not yet reached that level of marketshare, we leave it `null`.
+
+The output is a `target-dates.json` file, which looks like this:
+
+```json
+{
+  "abortcontroller": {
+    "keystone": "2019-04-02",
+    "marketshare": 97.01,
+    "reached": {
+      "80": "2018-11-06",
+      "85": "2019-07-08",
+      "90": "2020-03-05",
+      "91": "2020-05-08",
+      "92": "2020-08-11",
+      "93": "2021-02-05",
+      "94": "2021-11-04",
+      "95": "2022-07-03",
+      "96": "2022-11-04",
+      "97": "2023-06-03",
+      "98": null,
+      "99": null
+    }
+  },
+}
+```
+
+`compute-target-dates.mjs` also generates a `survival-input-data.csv` file, which you can open in any spreadsheet. You can sort/filter the features by any column, just to get a feel for the data.
+
 ## Baseline Calculator
 
-`baseline-calculator.mjs` does the work here, based on `keystone-release-dates.json`, `historical-feature-data.json`, and caniuse's `data.json`.
+`baseline-calculator.mjs` does the work here, based on `target-dates.json`.
 
-Our goal is to perform a [survival analysis](https://en.wikipedia.org/wiki/Survival_analysis).
+For example, let's just look at the features launched in 2019. Here they all are, based on `survival-input-data.csv`.
 
-We start by considering only the web features that are supported by all major browsers. I'm calling those features "Baselineable" features. Baselineable features _could_ become part of Baseline, but only if/when they achieve "enough" market share. (As of May 2023, there are 311 Baselineable features, supported in the current latest versions of all major browsers.)
+feature|indeterminate-checkbox|brotli|flac|download|pointer|rellist|date-tolocaledatestring|abortcontroller
+---|---|---|---|---|---|---|---|---
+marketshare|98.57|97.41|97.38|97.57|97.23|97.53|96.93|97
+days to 80%|0|0|0|0|37|0|35|0
+days to 85%|0|0|0|46|99|63|156|97
+days to 90%|0|0|0|76|193|276|338|338
+days to 91%|0|0|203|76|374|338|402|402
+days to 92%|164|0|203|138|434|379|521|497
+days to 93%|224|76|203|138|480|472|856|675
+days to 94%|316|138|232|209|647|583|947|947
+days to 95%|346|413|505|505|953|976|1188|1188
+days to 96%|558|869|869|654|1057|1266|1347|1312
+days to 97%|955|1353|1353|1018|1314|1523|not yet|1523
+days to 98%|1274|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+days to 99%|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
 
-Based on the list of Baselineable features, we build a table of values, where each cell is defined by two numbers:
+Our goal is to perform a [survival analysis](https://en.wikipedia.org/wiki/Survival_analysis). For the table above, we can ask questions like this, which you can answer just by looking at the table above:
 
-* a target market share (e.g. 95% market share)
-* a percentage of Baselineable features that have reached the target market share (e.g. 80% of Baselineable features)
+* How long did it take 50% of 2019's features (four features) to reach 80% marketshare? (0 days)
+* How long did it take 100% of 2019's features to reach 80% marketshare? (37 days = 1 month)
+* How long did it take 50% of 2019's features (four features) to reach 95% marketshare? (505 days = 17 months)
+* How long did it take 100% of 2019's features to reach 95% marketshare? (1,188 days = 40 months)
+* How long did it take 50% of 2019's features (four features) to reach 98% marketshare? (it hasn't happened yet!)
 
-Some Baselineable features have never reached 95% market share, despite being supported in all browsers for years. But, for each Baselineable feature that _has_ achieved 95% market share, we can compute how long it took to get there, starting at the feature's "keystone release date," until the date it reached 95% market share.
+For each question, we ask about a target marketshare (e.g. 95% share) and a percentile of Baselineable features that have reached the target marketshare (e.g. 50% of features).
 
-We can then sort the features by how long it took them to achieve 95% market share. (Some features took just one month to get 95% market share; the `<progress>` element took 70 months to get there.)
+For the eight features of 2019, listed above, we can build a table of these questions and answers, like this:
 
-Then, we compute the 80th percentile, i.e. how long it took 80% of Baselineable features to reach 95% market share. (Answer: 48 months.)
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features|100% of features
+---|---|---|---|---|---|---|---|---|---
+80% share|0 months|0 months|1 months|1 months|1 months|1 months|1 months|1 months|1 months
+85% share|2 months|3 months|3 months|5 months|5 months|5 months|5 months|5 months|5 months
+90% share|3 months|9 months|11 months|11 months|11 months|11 months|11 months|11 months|11 months
+91% share|7 months|12 months|13 months|13 months|13 months|13 months|13 months|13 months|13 months
+92% share|7 months|14 months|17 months|17 months|17 months|17 months|17 months|17 months|17 months
+93% share|7 months|16 months|23 months|29 months|29 months|29 months|29 months|29 months|29 months
+94% share|11 months|22 months|32 months|32 months|32 months|32 months|32 months|32 months|32 months
+95% share|17 months|33 months|40 months|40 months|40 months|40 months|40 months|40 months|40 months
+96% share|29 months|42 months|44 months|45 months|45 months|45 months|45 months|45 months|45 months
+97% share|45 months|51 months|51 months|not yet|not yet|not yet|not yet|not yet|not yet
+98% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+99% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+
+That's what the Baseline calculator does, either for all features for all time, or just for a specified calendar year.
 
 # Reproducing Results
 
@@ -121,58 +217,52 @@ git submodule update --init --recursive
 
 1. Run `compute-keystone-release-dates.mjs` to generate `keystone-release-dates.json`
 2. Run `compute-historical-share.mjs` to generate `historical-feature-data.json`.
+3. Run `compute-target-dates.mjs` to generate `target-data.json` and `survival-input-data.csv`
 3. Run `baseline-calculator.mjs` to generate the result table
 
 # Interpretation of Results
 
-Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
----|---|---|---|---|---|---|---|---
-80% share|0 months|2 months|5 months|16 months|21 months|24 months|29 months|never
-90% share|7 months|21 months|22 months|32 months|never|never|never|never
-95% share|30 months|45 months|48 months|never|never|never|never|never
-97% share|56 months|never|never|never|never|never|never|never
-98% share|never|never|never|never|never|never|never|never
-99% share|never|never|never|never|never|never|never|never
+Here are the results of running `baseline-calculator.mjs` on all features for all time.
 
-You'll notice a lot of "nevers" on this table.
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features|100% of features
+---|---|---|---|---|---|---|---|---|---
+80% share|0 months|1 months|2 months|6 months|14 months|15 months|17 months|17 months|43 months
+85% share|0 months|3 months|3 months|10 months|16 months|17 months|20 months|43 months|not yet
+90% share|3 months|9 months|11 months|18 months|35 months|not yet|not yet|not yet|not yet
+91% share|5 months|12 months|16 months|23 months|44 months|not yet|not yet|not yet|not yet
+92% share|7 months|16 months|20 months|28 months|not yet|not yet|not yet|not yet|not yet
+93% share|9 months|21 months|24 months|32 months|not yet|not yet|not yet|not yet|not yet
+94% share|17 months|28 months|29 months|43 months|not yet|not yet|not yet|not yet|not yet
+95% share|22 months|34 months|37 months|not yet|not yet|not yet|not yet|not yet|not yet
+96% share|33 months|45 months|51 months|not yet|not yet|not yet|not yet|not yet|not yet
+97% share|44 months|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+98% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+99% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
 
-Looking at the cell in the upper right (80% share, 99% of features), the table is saying that out of 311 Baselineable features, at least 1% haven't achieved 80% market share yet.
+You'll notice a lot of "not yets" on this table.
 
-As of May 2023, those features are:
+Looking at the cell near the upper right (85% share, 100% of features), the table is saying that some features supported in all browsers haven't reached 85% share yet. (It's actually just one feature, `css-media-range-syntax`, shipped as part of iOS 16.4 in March 2023.)
 
-* [css-media-range-syntax](https://caniuse.com/css-media-range-syntax)
-* [import-maps](https://caniuse.com/import-maps)
-* [js-regexp-lookbehind](https://caniuse.com/js-regexp-lookbehind)
-* [offscreencanvas](https://caniuse.com/offscreencanvas)
-
-… and they all shipped as part of iOS 16.4 in March 2023.
-
-Looking at the cell in the lower left (99% share, 50% of features), the table is saying that more than half of Baselineable features have never achieved 99% market share. In fact, only 61 of the 311 Baselineable features have achieved 99% market share; only 143 have achieved 98% market share.
+Looking at the cell in the lower left (99% share, 50% of features), the table is saying that more than half of Baselineable features have never achieved 99% market share. In fact, only 12 of the 177 Baselineable features have achieved 99% market share; only 54 have achieved 98% market share.
 
 That's because 98% market share is a surprisingly high bar to achieve. If you insist on avoiding web features that haven't achieved 98% market share, you'll be missing out on features that shipped years ago.
 
 Just to pick a few examples, none of these features have reached 98% market share:
 
 * CSS
-    * calc
+    * variables
     * grid
 * JS language
     * let/const
     * classes
     * arrow funtions
-    * destructuring
-    * template literals
 * JS API
-	* Promises
-	* IndexedDB
-	* URL API
+	* Object.entries
+	* fetch
+	* Array.find
 	* Proxy object
-* File formats
-    * TTF
-    * MP3 audio
-    * MP4/H.264 video
 
-All of these features became supported in all major browsers more than five years ago. Many of them became supported in all major browsers in 2015 with the release of Edge 12.
+All of these features became supported in all major browsers more than five years ago.
 
 Why does it take so long to achieve 98% market share? There are a few reasons:
 
@@ -182,183 +272,186 @@ Why does it take so long to achieve 98% market share? There are a few reasons:
 * Even users who can upgrade often upgrade slowly. It's common for iOS users to upgrade annually, if that.
 * There are a bunch of weird old browsers out there. Internet Explorer, Opera Mini, UC Browser… these add up to 1% market share all by themselves.
 
-# Update: Cohort Analysis
+# Cohort Analysis
 
-`baseline-calculotar.mjs` now accepts a command-line argument, allowing you to specify a "cohort year." For example, `--cohort=2016` will consider all/only features whose keystone release date was in 2016. (It works by string comparison, so you can even pass a cohort _month_ if you want, like this: `--cohort-2016-08`)
+`baseline-calculator.mjs` also accepts a command-line argument, allowing you to specify a "cohort year." For example, `--cohort=2016` will consider all/only features whose keystone release date was in 2016. (It works by string comparison, so you can even pass a cohort _month_ if you want, like this: `--cohort-2016-08`)
 
 How does it look?
-<details><summary>Cohorts by year for eight years (with some funny business around 2015, and cohort by month for April 2021)</summary>
+<details><summary>Cohorts by year for seven years</summary>
 <p>
 Here are the cohorts:
 
-## 2015: 112 features
+# 2016: 17 features
+Features: array-find-index, array-includes, arrow-functions, background-position-x-y, background-repeat-round-space, border-radius, comparedocumentposition, document-scrollingelement, es6-class, es6-generators, font-feature, insert-adjacent, internationalization, localecompare, pagevisibility, proxy, rest-parameters
 
-Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
----|---|---|---|---|---|---|---|---
-80% share|0 months|4 months|11 months|18 months|21 months|26 months|29 months|29 months
-90% share|11 months|21 months|21 months|31 months|42 months|44 months|44 months|59 months
-95% share|32 months|44 months|48 months|56 months|56 months|56 months|56 months|59 months
-97% share|46 months|56 months|63 months|70 months|73 months|76 months|83 months|85 months
-98% share|58 months|70 months|73 months|never|never|never|never|never
-99% share|never|never|never|never|never|never|never|never
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features|100% of features
+---|---|---|---|---|---|---|---|---|---
+80% share|6 months|14 months|14 months|17 months|43 months|43 months|43 months|43 months|43 months
+85% share|11 months|14 months|14 months|17 months|43 months|43 months|43 months|43 months|43 months
+90% share|18 months|20 months|22 months|26 months|43 months|43 months|43 months|43 months|43 months
+91% share|23 months|23 months|24 months|27 months|43 months|43 months|43 months|43 months|43 months
+92% share|27 months|28 months|28 months|30 months|43 months|43 months|43 months|43 months|43 months
+93% share|31 months|32 months|32 months|35 months|43 months|43 months|43 months|43 months|43 months
+94% share|35 months|36 months|36 months|37 months|43 months|43 months|43 months|43 months|43 months
+95% share|35 months|38 months|39 months|42 months|43 months|43 months|43 months|43 months|43 months
+96% share|36 months|47 months|47 months|47 months|50 months|50 months|50 months|50 months|50 months
+97% share|41 months|70 months|72 months|79 months|79 months|79 months|79 months|79 months|79 months
+98% share|70 months|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+99% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
 
-### Excluding Edge 12 keystones: 12 features
+# 2017: 28 features
+Features: array-find, async-functions, bloburls, const, css-font-stretch, css-grid, css-variables, css-writing-mode, element-closest, fetch, focusin-focusout-events, form-attribute, form-validation, gamepad, input-pattern, keyboardevent-getmodifierstate, let, matchesselector, meter, object-entries, object-values, once-event-listener, outline, passive-event-listener, svg-css, template, user-timing, viewport-units
 
-We're treating "Edge" as a "major browser," but Edge's first release was Edge 12 in 2015, so a bunch of features have a keystone release date matching Edge 12's release date in July 2015. I've published a branch, `exclude-edge-12-keystones`, which excludes those.
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features|100% of features
+---|---|---|---|---|---|---|---|---|---
+80% share|0 months|3 months|4 months|7 months|17 months|17 months|17 months|17 months|17 months
+85% share|2 months|5 months|10 months|17 months|17 months|34 months|34 months|34 months|34 months
+90% share|5 months|14 months|15 months|17 months|17 months|44 months|44 months|44 months|44 months
+91% share|5 months|18 months|20 months|20 months|21 months|44 months|44 months|44 months|44 months
+92% share|15 months|22 months|22 months|23 months|24 months|44 months|44 months|44 months|44 months
+93% share|20 months|25 months|26 months|28 months|28 months|44 months|44 months|44 months|44 months
+94% share|26 months|29 months|29 months|30 months|32 months|44 months|44 months|44 months|44 months
+95% share|28 months|34 months|34 months|37 months|40 months|44 months|44 months|44 months|44 months
+96% share|35 months|44 months|49 months|52 months|57 months|57 months|57 months|57 months|57 months
+97% share|53 months|68 months|68 months|69 months|69 months|69 months|69 months|69 months|69 months
+98% share|75 months|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+99% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
 
-In that branch, there are only 200 Baselineable features (instead of 311), and, focusing just on those features, the all-cohort table looks like this:
+# 2018: 22 features
+Features: beacon, constraint-validation, css-media-interaction, dom-manip-convenience, eme, font-unicode-range, input-minlength, kerning-pairs-ligatures, link-icon-png, pad-start-end, promise-finally, resource-timing, serviceworkers, subresource-integrity, svg-fragment, svg-html5, transforms2d, upgradeinsecurerequests, urlsearchparams, wasm, woff2, wordwrap
 
-Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
----|---|---|---|---|---|---|---|---
-80% share|0 months|2 months|5 months|17 months|19 months|24 months|59 months|never
-90% share|7 months|21 months|24 months|42 months|never|never|never|never
-95% share|30 months|47 months|54 months|never|never|never|never|never
-97% share|never|never|never|never|never|never|never|never
-98% share|never|never|never|never|never|never|never|never
-99% share|never|never|never|never|never|never|never|never
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features|100% of features
+---|---|---|---|---|---|---|---|---|---
+80% share|0 months|0 months|1 months|4 months|8 months|10 months|10 months|10 months|10 months
+85% share|0 months|2 months|6 months|8 months|9 months|20 months|20 months|20 months|20 months
+90% share|6 months|10 months|14 months|19 months|20 months|35 months|35 months|35 months|35 months
+91% share|10 months|14 months|14 months|20 months|21 months|35 months|35 months|35 months|35 months
+92% share|13 months|14 months|16 months|20 months|23 months|35 months|35 months|35 months|35 months
+93% share|14 months|18 months|19 months|23 months|27 months|35 months|35 months|35 months|35 months
+94% share|20 months|21 months|22 months|27 months|35 months|39 months|39 months|39 months|39 months
+95% share|23 months|27 months|31 months|35 months|40 months|50 months|50 months|50 months|50 months
+96% share|35 months|43 months|43 months|51 months|51 months|52 months|52 months|52 months|52 months
+97% share|54 months|61 months|62 months|62 months|62 months|62 months|62 months|62 months|62 months
+98% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+99% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
 
-On that branch, the 2015 table looks like this:
+# 2019: 8 features
+Features: abortcontroller, brotli, date-tolocaledatestring, download, flac, indeterminate-checkbox, pointer, rellist
 
-Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
----|---|---|---|---|---|---|---|---
-80% share|12 months|18 months|19 months|29 months|59 months|59 months|59 months|59 months
-90% share|23 months|42 months|42 months|42 months|59 months|59 months|59 months|59 months
-95% share|46 months|54 months|54 months|56 months|59 months|59 months|59 months|59 months
-97% share|66 months|74 months|83 months|85 months|87 months|87 months|87 months|87 months
-98% share|91 months|never|never|never|never|never|never|never
-99% share|never|never|never|never|never|never|never|never
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features|100% of features
+---|---|---|---|---|---|---|---|---|---
+80% share|0 months|0 months|1 months|1 months|1 months|1 months|1 months|1 months|1 months
+85% share|2 months|3 months|3 months|5 months|5 months|5 months|5 months|5 months|5 months
+90% share|3 months|9 months|11 months|11 months|11 months|11 months|11 months|11 months|11 months
+91% share|7 months|12 months|13 months|13 months|13 months|13 months|13 months|13 months|13 months
+92% share|7 months|14 months|17 months|17 months|17 months|17 months|17 months|17 months|17 months
+93% share|7 months|16 months|23 months|29 months|29 months|29 months|29 months|29 months|29 months
+94% share|11 months|22 months|32 months|32 months|32 months|32 months|32 months|32 months|32 months
+95% share|17 months|33 months|40 months|40 months|40 months|40 months|40 months|40 months|40 months
+96% share|29 months|42 months|44 months|45 months|45 months|45 months|45 months|45 months|45 months
+97% share|45 months|51 months|51 months|not yet|not yet|not yet|not yet|not yet|not yet
+98% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+99% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
 
-## 2016: 19 features
+# 2020: 63 features
+Features: apng, array-flat, bigint, chacha20-poly1305, contentsecuritypolicy2, cryptography, css-all, css-any-link, css-backgroundblendmode, css-caret-color, css-case-insensitive, css-conic-gradients, css-default-pseudo, css-env-function, css-filters, css-focus-within, css-font-rendering-controls, css-in-out-of-range, css-indeterminate-pseudo, css-math-functions, css-placeholder, css-placeholder-shown, css-read-only-write, css-rrggbbaa, css-shapes, css-snappoints, css-supports-api, css-text-orientation, css-textshadow, datauri, details, es6-module, es6-module-dynamic-import, eventsource, fileapi, flow-root, font-kerning, font-loading, font-variant-numeric, getboundingclientrect, iframe-srcdoc, indexeddb, indexeddb2, intl-pluralrules, justify-content-space-evenly, keyboardevent-key, link-rel-preconnect, object-fit, ol-reversed, path2d, prefers-color-scheme, prefers-reduced-motion, rel-noopener, resizeobserver, shadowdomv1, svg, svg-smil, textencoder, tls1-3, unhandledrejection, vector-effect, webgl, will-change
 
-Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
----|---|---|---|---|---|---|---|---
-80% share|12 months|17 months|19 months|20 months|23 months|23 months|23 months|23 months
-90% share|30 months|32 months|36 months|36 months|37 months|37 months|37 months|37 months
-95% share|44 months|47 months|48 months|48 months|53 months|53 months|53 months|53 months
-97% share|72 months|never|never|never|never|never|never|never
-98% share|never|never|never|never|never|never|never|never
-99% share|never|never|never|never|never|never|never|never
+**Note: In January 2020, Microsoft release Edge 79, switching its browser engine to Chromium. That made Edge 79 the keystone browser for dozens of features, way more than usual.**
 
-## 2017: 31 features
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features|100% of features
+---|---|---|---|---|---|---|---|---|---
+80% share|0 months|0 months|0 months|1 months|2 months|6 months|6 months|16 months|16 months
+85% share|0 months|0 months|0 months|2 months|3 months|16 months|16 months|16 months|16 months
+90% share|0 months|4 months|6 months|9 months|10 months|16 months|16 months|16 months|16 months
+91% share|0 months|7 months|7 months|11 months|13 months|16 months|16 months|18 months|18 months
+92% share|2 months|9 months|10 months|15 months|16 months|16 months|16 months|22 months|22 months
+93% share|2 months|13 months|15 months|19 months|20 months|24 months|24 months|27 months|27 months
+94% share|7 months|21 months|22 months|25 months|27 months|29 months|29 months|40 months|40 months
+95% share|9 months|30 months|30 months|30 months|31 months|36 months|36 months|41 months|41 months
+96% share|21 months|33 months|33 months|41 months|41 months|44 months|44 months|not yet|not yet
+97% share|41 months|41 months|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+98% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+99% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
 
-Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
----|---|---|---|---|---|---|---|---
-80% share|1 months|10 months|10 months|13 months|18 months|24 months|24 months|24 months
-90% share|17 months|24 months|24 months|25 months|29 months|44 months|44 months|44 months
-95% share|35 months|43 months|44 months|44 months|47 months|57 months|57 months|57 months
-97% share|65 months|never|never|never|never|never|never|never
-98% share|never|never|never|never|never|never|never|never
-99% share|never|never|never|never|never|never|never|never
+# 2021: 14 features
+Features: audio-api, css-image-orientation, css-logical-props, css-matches-pseudo, css-not-sel-list, css-revert-value, css-sticky, css3-tabsize, element-scroll-methods, flexbox-gap, font-family-system-ui, link-rel-preload, mediarecorder, webgl2
 
-## 2018: 22 features
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features|100% of features
+---|---|---|---|---|---|---|---|---|---
+80% share|0 months|1 months|2 months|2 months|2 months|2 months|2 months|2 months|2 months
+85% share|0 months|2 months|2 months|3 months|4 months|4 months|4 months|4 months|4 months
+90% share|2 months|4 months|5 months|7 months|9 months|9 months|9 months|9 months|9 months
+91% share|3 months|6 months|9 months|10 months|14 months|14 months|14 months|14 months|14 months
+92% share|5 months|10 months|13 months|14 months|21 months|21 months|21 months|21 months|21 months
+93% share|9 months|14 months|20 months|21 months|22 months|22 months|22 months|22 months|22 months
+94% share|15 months|18 months|22 months|26 months|not yet|not yet|not yet|not yet|not yet
+95% share|22 months|26 months|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+96% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+97% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+98% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+99% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
 
-Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
----|---|---|---|---|---|---|---|---
-80% share|0 months|1 months|4 months|6 months|8 months|10 months|10 months|10 months
-90% share|12 months|15 months|16 months|18 months|20 months|35 months|35 months|35 months
-95% share|28 months|35 months|36 months|40 months|40 months|47 months|47 months|47 months
-97% share|never|never|never|never|never|never|never|never
-98% share|never|never|never|never|never|never|never|never
-99% share|never|never|never|never|never|never|never|never
+# 2022: 17 features
+Features: border-image, broadcastchannel, css-cascade-layers, css-containment, css-focus-visible, css-font-palette, css-gradients, css-media-resolution, css-motion-paths, css-overflow, css-overscroll-behavior, css-text-align-last, dialog, permissions-api, text-emphasis, transforms3d, webp
 
-## 2019: 7 features
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features|100% of features
+---|---|---|---|---|---|---|---|---|---
+80% share|1 months|1 months|2 months|2 months|2 months|2 months|2 months|2 months|2 months
+85% share|3 months|3 months|3 months|3 months|5 months|5 months|5 months|5 months|5 months
+90% share|5 months|6 months|6 months|8 months|9 months|9 months|9 months|9 months|9 months
+91% share|6 months|7 months|7 months|10 months|not yet|not yet|not yet|not yet|not yet
+92% share|8 months|9 months|10 months|not yet|not yet|not yet|not yet|not yet|not yet
+93% share|9 months|11 months|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+94% share|15 months|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+95% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+96% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+97% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+98% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+99% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
 
-Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
----|---|---|---|---|---|---|---|---
-80% share|0 months|2 months|2 months|20 months|20 months|20 months|20 months|20 months
-90% share|7 months|14 months|14 months|29 months|29 months|29 months|29 months|29 months
-95% share|22 months|40 months|40 months|never|never|never|never|never
-97% share|never|never|never|never|never|never|never|never
-98% share|never|never|never|never|never|never|never|never
-99% share|never|never|never|never|never|never|never|never
+# 2023: 8 features
+Features: colr, css-container-queries, css-container-query-units, css-media-range-syntax, import-maps, js-regexp-lookbehind, screen-orientation, viewport-unit-variants
 
-## 2020: 65 features
+Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features|100% of features
+---|---|---|---|---|---|---|---|---|---
+80% share|0 months|2 months|2 months|2 months|2 months|2 months|2 months|2 months|2 months
+85% share|1 months|2 months|3 months|not yet|not yet|not yet|not yet|not yet|not yet
+90% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+91% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+92% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+93% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+94% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+95% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+96% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+97% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+98% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+99% share|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
 
-Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
----|---|---|---|---|---|---|---|---
-80% share|0 months|0 months|0 months|2 months|3 months|6 months|6 months|16 months
-90% share|0 months|6 months|8 months|10 months|13 months|16 months|16 months|16 months
-95% share|10 months|30 months|30 months|33 months|33 months|never|never|never
-97% share|never|never|never|never|never|never|never|never
-98% share|never|never|never|never|never|never|never|never
-99% share|never|never|never|never|never|never|never|never
-
-## 2021: 13 features
-
-Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
----|---|---|---|---|---|---|---|---
-80% share|0 months|1 months|2 months|2 months|2 months|2 months|2 months|2 months
-90% share|3 months|8 months|10 months|13 months|14 months|14 months|14 months|14 months
-95% share|never|never|never|never|never|never|never|never
-97% share|never|never|never|never|never|never|never|never
-98% share|never|never|never|never|never|never|never|never
-99% share|never|never|never|never|never|never|never|never
-
-### April 2021: 4 features
-
-```
-node baseline-calculator.mjs --cohort=2021-04
-```
-
-Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
----|---|---|---|---|---|---|---|---
-80% share|0 months|2 months|2 months|2 months|2 months|2 months|2 months|2 months
-90% share|3 months|5 months|14 months|14 months|14 months|14 months|14 months|14 months
-95% share|25 months|25 months|never|never|never|never|never|never
-97% share|never|never|never|never|never|never|never|never
-98% share|never|never|never|never|never|never|never|never
-99% share|never|never|never|never|never|never|never|never
-
-## 2022: 20 features
-
-Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
----|---|---|---|---|---|---|---|---
-80% share|1 months|2 months|2 months|2 months|2 months|3 months|3 months|3 months
-90% share|5 months|14 months|never|never|never|never|never|never
-95% share|never|never|never|never|never|never|never|never
-97% share|never|never|never|never|never|never|never|never
-98% share|never|never|never|never|never|never|never|never
-99% share|never|never|never|never|never|never|never|never
-
-## 2023: 11 features
-
-Market Share|50% of features|75% of features|80% of features|90% of features|95% of features|97% of features|98% of features|99% of features
----|---|---|---|---|---|---|---|---
-80% share|1 months|never|never|never|never|never|never|never
-90% share|never|never|never|never|never|never|never|never
-95% share|never|never|never|never|never|never|never|never
-97% share|never|never|never|never|never|never|never|never
-98% share|never|never|never|never|never|never|never|never
-99% share|never|never|never|never|never|never|never|never
 
 
 
 </p>
 </details> 
 
-That's a lot of tables, so, here's just the "80% features" column, by cohort year (excluding the Edge 12 keystones):
+That's a lot of tables, so, here's just the "95% features" column, by cohort year:
 
-Year|80% share|90% share|95% share|97% share|98% share|99% share
----|---|---|---|---|---|---
-2015|19 months|42 months|54 months|83 months|never|never
-2016|19 months|36 months|48 months|never|never|never
-2017|10 months|24 months|44 months|never|never|never
-2018|4 months|16 months|36 months|never|never|never
-2019|2 months|14 months|40 months|never|never|never
-2020|0 months|8 months|30 months|never|never|never
-2021|2 months|10 months|never|never|never|never
-2022|2 months|never|never|never|never|never
-2023|never|never|never|never|never|never
+Market Share|80% share|85% share|90% share|91% share|92% share|93% share|94% share|95% share|96% share|97% share
+---|---|---|---|---|---|---|---|---|---|---
+2016|43 months|43 months|43 months|43 months|43 months|43 months|43 months|43 months|50 months|79 months
+2017|17 months|17 months|17 months|21 months|24 months|28 months|32 months|40 months|57 months|69 months
+2018|8 months|9 months|20 months|21 months|23 months|27 months|35 months|40 months|51 months|62 months
+2019|1 months|5 months|11 months|13 months|17 months|29 months|32 months|40 months|45 months|not yet
+2020|2 months|3 months|10 months|13 months|16 months|20 months|27 months|31 months|41 months|not yet
+2021|2 months|4 months|9 months|14 months|21 months|22 months|not yet|not yet|not yet|not yet
+2022|2 months|5 months|9 months|not yet|not yet|not yet|not yet|not yet|not yet|not yet
+2023|2 months|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet|not yet
 
 ## Interpretation of Cohort Analysis: It's improving!
 
 Every column shows improvement over time. Next year, we might find that the 2021 cohort has an even better result.
 
-(Based on the "April 2021" cohort above, I predict that 2021's features will reach 95% market share in less than 30 months, but closer to 30 than 24.)
-
 # Conclusion: Baseline can and should be time-based
 
-* **We should change the goal for the Baseline definition.** The current goal for the definition of Baseline is to set a guideline that "works for most developers most of the time." I've argued elsewhere that [this goal has no meaning](https://github.com/web-platform-dx/feature-set/issues/174#issuecomment-1544481323), that it's impossible use data to argue whether a feature does or doesn't work for most developers (or any developer) most of the time.
-* **The new goal should be "80% of features with 95% market share."** That is, we should say "Baseline means that a feature has been supported in all major browsers for N months." And then, we should choose an N such that 80% of features have achieved 95% market share in that time. I picked the numbers 80 and 95 just because they feel reasonable to me.
-* **We should consider only the latest cohort year for determining "N" months.** 80% of 2015's Baselineable features took 54 months to reach 95% market share. 80% of 2020's Baselineable features took just 30 months to get there. Based on this data, we should define Baseline based on the latest cohort year in which 80% of features have achieved 95% market share. Currently, that's 30 months for 2020, but we can update this in future years based on new data.
-* **Therefore, in 2023, Baseline should be defined as features that have been available in all major browsers for at least 30 months (2.5 years).**
+* **The new goal should be "95% of features with 95% market share."** That is, we should say "Baseline means that a feature has been supported in all major browsers for N months." And then, we should choose an N such that 95% of features have achieved 95% market share in that time. I picked the numbers 95 and 95 just because they feel reasonable to me.
+* **We should consider only the latest cohort year for determining "N" months.** 95% of 2016's Baselineable features took 43 months to reach 95% market share. 95% of 2020's Baselineable features took just 31 months to get there. Based on this data, we should define Baseline based on the latest cohort year in which 95% of features have achieved 95% market share. Currently, that's 31 months for 2020, but we can update this in future years based on new data.
+* **Therefore, in 2023, Baseline should be defined as features that have been available in all major browsers for at least 31 months (2.5 years).**
